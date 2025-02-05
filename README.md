@@ -1,2 +1,2 @@
-# voting-app
-|Repository fopr the 1st mini-project
+# Scheduling-App
+This is a short description of the Scheduling app. Outlined is the Tech stack as well as references to the setup of the project. We will breifly outline the UML classes and their interactions as well as a sequence diagram for the outlined use case.
