@@ -10,13 +10,8 @@ public class adminController {
     @Autowired
     private adminService adminService;
 
-    @GetMapping("/festival/attendees")
-    public List<String> getFestivalAttendees() {
-        return adminService.getFestivalAttendees();
-    }
-
     @GetMapping("/event/{eventId}/attendees")
-    public List<String> getEventAttendees(@PathVariable Long eventId) {
+    public List<String> getEventAttendees(@PathVariable String eventId) {
         return adminService.getEventAttendees(eventId);
     }
 }

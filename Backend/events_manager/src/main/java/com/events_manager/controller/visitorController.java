@@ -1,14 +1,15 @@
 package com.events_manager.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import com.events_manager.model.visitor;
-import com.events_manager.service.visitorService;
+import com.events_manager.model.*;
+import com.events_manager.service.*;
 
 @RestController
 @RequestMapping("/api/visitors")
 public class visitorController {
     @Autowired
     private visitorService visitorService;
+    private eventService event;
 
     @PostMapping("/signup")
     public String signUp(@RequestBody visitor visitorDto) {
@@ -16,17 +17,17 @@ public class visitorController {
     }
 
     @PostMapping("/rsvp/{eventId}/{visitorId}")
-    public String rsvpForEvent(@PathVariable Long eventId, @PathVariable Long visitorId) {
+    public String rsvpForEvent(@PathVariable String eventId, @PathVariable String visitorId) {
         return "RSVP successful!";
     }
 
     @PostMapping("/rate/{eventId}")
-    public String rateEvent(@PathVariable Long eventId, @RequestParam int rating) {
+    public String rateEvent(@PathVariable String eventId, @RequestParam int rating) {
         return "Event rated successfully!";
     }
 
     @PostMapping("/comment/{eventId}")
-    public String commentOnEvent(@PathVariable Long eventId, @RequestBody String comment) {
+    public String commentOnEvent(@PathVariable String eventId, @RequestBody String comment) {
         return "Comment added successfully!";
     }
 }

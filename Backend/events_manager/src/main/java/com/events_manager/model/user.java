@@ -12,15 +12,28 @@ public class user {
         VISITOR;
     };
 
-    private UserRole role;
+    protected String role;
 
-    public user(String usernameInput, String emailInput,String passwordInput,String phoneNumeberInput, UserRole roleInput){
+    public user(String usernameInput, String emailInput,String passwordInput,String phoneNumeberInput){
         this.email = emailInput;
         this.userName = usernameInput;
         this.password = passwordInput;
         this.phoneNumber = phoneNumeberInput;
-        this.role = roleInput;
     }
+
+    public user(String userName, String email, String password) {
+        this.userName = userName;
+        this.email = email;
+        this.password = password;
+    }
+
+    public user(String password, String email) {
+        this.password = password;
+        this.email = email;
+    }
+    public user() {
+    }
+
     public String getUserId() {
         return this.userId;
     }
@@ -61,7 +74,7 @@ public class user {
         this.phoneNumber = phoneNumber;
     }
 
-    public UserRole getUserRole(){
+    public String getUserRole(){
 		return this.role;
 	}
     
