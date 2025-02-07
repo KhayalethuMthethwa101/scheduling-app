@@ -1,21 +1,19 @@
 package com.events_manager.repository;
 import com.google.cloud.firestore.Firestore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.events_manager.model.*;
-
 import java.util.List;
-
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-
 import java.util.ArrayList;
 import java.util.concurrent.ExecutionException;
 
 @Repository
 public class bookingRepository {
-
     private final Firestore firestore;
 
+    @Autowired
     public bookingRepository(Firestore firestore) {
         this.firestore = firestore;
     }

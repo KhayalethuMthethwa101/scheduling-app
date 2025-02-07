@@ -1,18 +1,21 @@
 package com.events_manager.repository;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-import com.google.firebase.cloud.FirestoreClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import com.events_manager.model.*;
-import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 public class eventRepository {
-    private final Firestore firestore = FirestoreClient.getFirestore();
+    private final Firestore firestore;
+
+    @Autowired
+    public eventRepository(Firestore firestore){
+        this.firestore=firestore;
+    }
 
     //Save or Create event
     public String saveEvent(event event) throws ExecutionException, InterruptedException {

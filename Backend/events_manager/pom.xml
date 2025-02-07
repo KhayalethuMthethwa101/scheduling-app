@@ -30,6 +30,11 @@
 		<java.version>23</java.version>
 		<maven.compiler.source>23</maven.compiler.source>
 		<maven.compiler.target>23</maven.compiler.target>
+		<google.cloud.firestore.version>3.14.0</google.cloud.firestore.version>
+		<firebase.admin.version>9.2.0</firebase.admin.version>
+		<google.auth.version>1.20.0</google.auth.version>
+		<google.cloud.core.version>2.22.0</google.cloud.core.version>
+		<grpc.version>1.58.0</grpc.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -63,14 +68,14 @@
 		<dependency>
 			<groupId>com.google.firebase</groupId>
 			<artifactId>firebase-admin</artifactId>
-			<version>9.4.3</version>
+			<version>${firebase.admin.version}</version>
 		</dependency>
 
 		<!-- Google Cloud Firestore -->
 		<dependency>
 			<groupId>com.google.cloud</groupId>
 			<artifactId>google-cloud-firestore</artifactId>
-			<version>3.7.2</version>
+			<version>${google.cloud.firestore.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.data</groupId>
@@ -78,13 +83,45 @@
 			<version>3.4.0</version>
 		</dependency>
 		<dependency>
+			<groupId>com.google.auth</groupId>
+			<artifactId>google-auth-library-oauth2-http</artifactId>
+			<version>${google.auth.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>jakarta.persistence</groupId>
 			<artifactId>jakarta.persistence-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+		<!-- Google Cloud Core -->
+		<dependency>
+			<groupId>com.google.cloud</groupId>
+			<artifactId>google-cloud-core</artifactId>
+			<version>${google.cloud.core.version}</version>
+		</dependency>
 
+		<!-- GRPC Dependencies -->
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-auth</artifactId>
+			<version>${grpc.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.grpc</groupId>
+			<artifactId>grpc-netty-shaded</artifactId>
+			<version>${grpc.version}</version>
+		</dependency>
 	</dependencies>
-
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.google.cloud</groupId>
+				<artifactId>libraries-bom</artifactId>
+				<version>26.28.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<build>
 		<plugins>
 			<plugin>

@@ -2,6 +2,7 @@ package com.events_manager.repository;
 import com.events_manager.model.*;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +10,9 @@ import java.util.concurrent.ExecutionException;
 
 @Repository
 public class userRepository {
-
     private final Firestore firestore;
 
+    @Autowired
     public userRepository(Firestore firestore) {
         this.firestore = firestore;
     }

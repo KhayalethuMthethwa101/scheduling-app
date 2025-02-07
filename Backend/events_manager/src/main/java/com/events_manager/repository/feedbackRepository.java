@@ -1,5 +1,6 @@
 package com.events_manager.repository;
 import com.google.cloud.firestore.Firestore;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -10,9 +11,9 @@ import java.util.ArrayList;
 
 @Repository
 public class feedbackRepository {
-
     private final Firestore firestore;
 
+    @Autowired
     public feedbackRepository(Firestore firestore) {
         this.firestore = firestore;
     }
