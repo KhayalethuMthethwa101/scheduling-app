@@ -6,31 +6,17 @@ public class user {
     private String email;
     private String password;
     private String phoneNumber;
-
-    public enum UserRole {
-        ADMIN,
-        VISITOR;
-    };
-
     protected String role;
 
-    public user(String usernameInput, String emailInput,String passwordInput,String phoneNumeberInput){
-        this.email = emailInput;
-        this.userName = usernameInput;
-        this.password = passwordInput;
-        this.phoneNumber = phoneNumeberInput;
-    }
-
-    public user(String userName, String email, String password) {
+    public user(String userId, String userName, String email, String password, String phoneNumber, String role) {
+        this.userId = userId;
         this.userName = userName;
         this.email = email;
         this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
     }
 
-    public user(String password, String email) {
-        this.password = password;
-        this.email = email;
-    }
     public user() {
     }
 

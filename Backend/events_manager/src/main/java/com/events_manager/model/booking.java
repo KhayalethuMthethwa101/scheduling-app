@@ -4,22 +4,18 @@ import java.util.Date;
 
 public class booking {
     private String bookingId;
-    private visitor visitor;
-    private event event;
+    private String userId;
+    private String eventId;
     public Date bookingDate;
 
-    public booking(Date bookingDate, visitor visitor, event event) {
+    public booking(String bookingId, String userId, String eventId, Date bookingDate) {
+        this.bookingId = bookingId;
+        this.userId = userId;
+        this.eventId = eventId;
         this.bookingDate = bookingDate;
-        this.visitor = visitor;
-        this.event = event;
     }
 
     public booking() {
-    }
-
-    public booking(event event, visitor visitor) {
-        this.visitor = visitor;
-        this.event = event;
     }
 
     public String getBookingId() {
@@ -30,20 +26,20 @@ public class booking {
         this.bookingId = bookingId;
     }
 
-    public visitor getVisitor() {
-        return visitor;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setVisitor(visitor visitor) {
-        this.visitor = visitor;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public event getEvent() {
-        return event;
+    public String getEventId() {
+        return eventId;
     }
 
-    public void setEvent(event event) {
-        this.event = event;
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 
     public Date getBookingDate() {
