@@ -1,6 +1,7 @@
 package com.events_manager.model;
 import com.google.type.DateTime;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class event {
@@ -8,16 +9,11 @@ public class event {
     public String eventName;
     public String eventDescription;
     public String location;
-    public enum eventStatus {
-        COMING,
-        ACTIVE,
-        ENDED;
-    };
-    public eventStatus status;
-    public DateTime dateOfEvent;
-    public List<visitor> attendees;
+    public String status;
+    public LocalDateTime dateOfEvent;
+    public List<user> attendees;
 
-    public event(String eventName, String eventDescription, String location, eventStatus status, DateTime dateOfEvent) {
+    public event(String eventName, String eventDescription, String location, String status, LocalDateTime dateOfEvent) {
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.location = location;
@@ -57,27 +53,27 @@ public class event {
         this.eventDescription = eventDescription;
     }
 
-    public eventStatus getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(eventStatus status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
-    public DateTime getDateOfEvent() {
+    public LocalDateTime getDateOfEvent() {
         return dateOfEvent;
     }
 
-    public void setDateOfEvent(DateTime dateOfEvent) {
+    public void setDateOfEvent(LocalDateTime dateOfEvent) {
         this.dateOfEvent = dateOfEvent;
     }
 
-    public List<visitor> getAttendees() {
+    public List<user> getAttendees() {
         return attendees;
     }
 
-    public void setAttendees(List<visitor> attendees) {
+    public void setAttendees(List<user> attendees) {
         this.attendees = attendees;
     }
 }

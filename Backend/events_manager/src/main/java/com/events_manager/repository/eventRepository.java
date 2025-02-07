@@ -50,4 +50,15 @@ public class eventRepository {
         }
         return eventList;
     }
+
+    // Update Event Status
+    public void updateEventStatus(String eventId, String status) throws ExecutionException, InterruptedException {
+        firestore.collection("events").document(eventId).update("status", status).get();
+    }
+
+    // Mark Attendee as Attended
+    public void addAttendee(String eventId, String visitorId) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = firestore.collection("events").document(eventId);
+        docRef.update("attendees", FieldValue.arrayUnion(visitorId)).get();
+    }
 }

@@ -37,4 +37,16 @@ public class eventController {
     public String deleteEvent(@PathVariable String id) throws ExecutionException, InterruptedException {
         return eventService.deleteEvent(id);
     }
+
+    // ✅ Update Event Status
+    @PostMapping("/{eventId}/update-status")
+    public void updateEventStatus(@PathVariable String eventId) throws ExecutionException, InterruptedException {
+        eventService.updateEventStatus(eventId);
+    }
+
+    // ✅ Mark Visitor as Attended
+    @PostMapping("/{eventId}/attend")
+    public void markUserAsAttended(@PathVariable String eventId, @RequestParam String visitorId) throws ExecutionException, InterruptedException {
+        eventService.markUserAsAttended(eventId, visitorId);
+    }
 }

@@ -4,25 +4,38 @@ import com.events_manager.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.events_manager.model.*;
+import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/feedback")
+@RequestMapping("/feedbacks")
 public class feedbackController {
-    @Autowired
-    private feedbackService feedbackService;
+    private final feedbackService feedbackService;
 
-    @PostMapping("/rate/{eventId}")
-    public String rateEvent(@PathVariable event event, @RequestParam int rating) {
-        return feedbackService.rateEvent(event, rating);
+    @Autowired
+    public feedbackController(feedbackService feedbackService) {
+        this.feedbackService = feedbackService;
     }
 
-//    @PostMapping("/comment/{eventId}")
-//    public String commentOnEvent(@PathVariable String eventId, @RequestBody String comment) {
-//        return feedbackService.commentOnEvent(eventId, comment);
-//    }
+    // Submit Feedback (Only Visitors Who Attended the Event)
+    @PostMapping
+    public String addFeedback(
+            @RequestParam String eventId,
+            @RequestParam String visitorId,
+            @RequestParam int rating,
+            @RequestParam int recommendation,
+            @RequestParam String comment) throws ExecutionException, InterruptedException {
+        return feedbackService.addFeedback(eventId, visitorId, rating, recommendation, comment);
+    }
 
-    @GetMapping("/event/{eventId}/comments")
-    public List<String> getEventComments(@PathVariable String eventId) {
-        return feedbackService.getEventComments(eventId);
+    // Retrieve Feedback by ID
+    @GetMapping("/{id}")
+    public feedback getFeedback(@PathVariable String id) throws ExecutionException, InterruptedException {
+        return feedbackService.getFeedback(id);
+    }
+
+    // Retrieve All Feedback for an Event
+    @GetMapping("/event/{eventId}")
+    public List<feedback> getFeedbackByEvent(@PathVariable String eventId) throws ExecutionException, InterruptedException {
+        return feedbackService.getFeedbackByEvent(eventId);
     }
 }

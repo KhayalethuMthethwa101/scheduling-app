@@ -1,14 +1,11 @@
 package com.events_manager.repository;
 import com.google.cloud.firestore.Firestore;
 import org.springframework.stereotype.Repository;
-
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import com.events_manager.model.feedback;
-
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
-
 import java.util.ArrayList;
 
 @Repository
