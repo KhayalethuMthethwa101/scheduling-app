@@ -4,6 +4,7 @@ import com.events_manager.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -13,16 +14,18 @@ public class userController {
 
     @Autowired
     public userController(userService userService) {
-        this.userService = userService;
+        this.userService=userService;
     }
 
-    @GetMapping
+    @GetMapping("/gerUser")
     public List<user> getAllUsers() throws ExecutionException, InterruptedException {
         return userService.getAllUsers();
     }
 
-    @PostMapping
-    public String addUser(@RequestBody user user) throws ExecutionException, InterruptedException {
+    @PostMapping("/adduser")
+    public String addUser(@RequestParam String userName, String email, String password, String phoneNumber, String role) throws ExecutionException, InterruptedException {
+        String userId = UUID.randomUUID().toString();
+        user user = new user(userId, userName, email, password, phoneNumber, role);
         return userService.addUser(user);
     }
 

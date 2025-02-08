@@ -1,44 +1,47 @@
 package com.events_manager.service;
 import com.events_manager.model.*;
+import com.google.api.core.ApiFuture;
+import com.google.cloud.firestore.*;
+import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 import java.util.List;
-import com.events_manager.repository.*;
-import java.util.UUID;
-import java.util.Date;
 import java.util.concurrent.ExecutionException;
 
 @Service
 public class bookingService {
-    private final bookingRepository bookingRepository;
-    private final userRepository userRepository; // To check user role
+    Firestore firestore = FirestoreClient.getFirestore();
 
-    public bookingService(bookingRepository bookingRepository, userRepository userRepository) {
-        this.bookingRepository = bookingRepository;
-        this.userRepository = userRepository;
-    }
-
-    public String addBooking(String eventId, String visitorId) throws ExecutionException, InterruptedException {
-        // Check if the user exists and is a visitor
-        user user = userRepository.getUserById(visitorId);
-        if (user == null || !"VISITOR".equals(user.getUserRole())) {
-            throw new IllegalArgumentException("Only visitors can book an event.");
-        }
-        // Create a booking entry
-        String bookingId = UUID.randomUUID().toString();
-        booking booking = new booking(bookingId, visitorId, eventId, new Date());
-
-        return bookingRepository.saveBooking(booking);
+    public String addBooking(booking booking) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = firestore.collection("bookings").document(booking.getBookingId());
+        ApiFuture<WriteResult> future = docRef.set(booking);
+        return future.get().getUpdateTime().toString();
     }
 
     public booking getBooking(String id) throws ExecutionException, InterruptedException {
-        return bookingRepository.getBookingById(id);
+        DocumentReference docRef = firestore.collection("bookings").document(id);
+        ApiFuture<DocumentSnapshot> future = docRef.get();
+        DocumentSnapshot document = future.get();
+
+        if (document.exists()) {
+            return document.toObject(booking.class);
+        } else {
+            return null;
+        }
     }
 
     public String deleteBooking(String id) throws ExecutionException, InterruptedException {
-        return bookingRepository.deleteBooking(id);
+        ApiFuture<WriteResult> writeResult = firestore.collection("bookings").document(id).delete();
+        return writeResult.get().getUpdateTime().toString();
     }
 
     public List<booking> getAllBookings() throws ExecutionException, InterruptedException {
-        return bookingRepository.getAllBookings();
+        ApiFuture<QuerySnapshot> future = firestore.collection("bookings").get();
+        List<booking> bookingList = new ArrayList<>();
+
+        for (DocumentSnapshot document : future.get().getDocuments()) {
+            bookingList.add(document.toObject(booking.class));
+        }
+        return bookingList;
     }
 }

@@ -1,11 +1,14 @@
 package com.events_manager.controller;
-import jakarta.websocket.server.PathParam;
+import com.events_manager.service.bookingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.events_manager.service.eventService;
 import com.events_manager.model.event;
 
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -14,8 +17,8 @@ public class eventController {
     private final eventService eventService;
 
     @Autowired
-    public eventController(eventService eventService){
-        this.eventService = eventService;
+    public eventController(eventService eventService) {
+        this.eventService=eventService;
     }
 
     @GetMapping
@@ -24,8 +27,10 @@ public class eventController {
     }
 
     @PostMapping
-    public String createEvent(@RequestBody event eventDto) throws ExecutionException, InterruptedException {
-        return eventService.createEvent(eventDto);
+    public String createEvent(@RequestParam String eventName, String evenDescription, String location, String status, LocalDateTime dateOfEvent) throws ExecutionException, InterruptedException {
+        String eventId = UUID.randomUUID().toString();
+        event event = new event(eventId, eventName, evenDescription, location, status, dateOfEvent);
+        return eventService.createEvent(event);
     }
 
     @GetMapping("{eventId}")
@@ -38,15 +43,15 @@ public class eventController {
         return eventService.deleteEvent(id);
     }
 
-    // ✅ Update Event Status
+    // Update Event Status
     @PostMapping("/{eventId}/update-status")
     public void updateEventStatus(@PathVariable String eventId) throws ExecutionException, InterruptedException {
         eventService.updateEventStatus(eventId);
     }
 
-    // ✅ Mark Visitor as Attended
-    @PostMapping("/{eventId}/attend")
-    public void markUserAsAttended(@PathVariable String eventId, @RequestParam String visitorId) throws ExecutionException, InterruptedException {
-        eventService.markUserAsAttended(eventId, visitorId);
+    // Mark Visitor as Attended
+    @PostMapping("/{eventId}&{userId}")
+    public void addAttendee(@PathVariable String eventId, String userId) throws ExecutionException, InterruptedException {
+        eventService.addAttendee(eventId, userId);
     }
 }

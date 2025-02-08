@@ -13,7 +13,7 @@ public class feedbackController {
 
     @Autowired
     public feedbackController(feedbackService feedbackService) {
-        this.feedbackService = feedbackService;
+        this.feedbackService=feedbackService;
     }
 
     // Submit Feedback (Only Visitors Who Attended the Event)

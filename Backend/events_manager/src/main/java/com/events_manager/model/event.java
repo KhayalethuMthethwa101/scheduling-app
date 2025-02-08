@@ -13,7 +13,8 @@ public class event {
     public LocalDateTime dateOfEvent;
     public List<user> attendees;
 
-    public event(String eventName, String eventDescription, String location, String status, LocalDateTime dateOfEvent) {
+    public event(String eventId, String eventName, String eventDescription, String location, String status, LocalDateTime dateOfEvent) {
+        this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.location = location;

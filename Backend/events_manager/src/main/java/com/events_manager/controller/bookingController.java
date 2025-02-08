@@ -1,4 +1,5 @@
 package com.events_manager.controller;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -6,23 +7,22 @@ import org.springframework.web.bind.annotation.*;
 import com.events_manager.service.*;
 import com.events_manager.model.*;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/api/bookings")
 public class bookingController {
-
-    private final bookingService bookingService;
-
     @Autowired
-    public bookingController(bookingService bookingService) {
-        this.bookingService = bookingService;
-    }
+    private bookingService bookingService;
 
     // Create a Booking (Only Visitors Allowed)
     @PostMapping
-    public String addBooking(@RequestParam String eventId, @RequestParam String visitorId) throws ExecutionException, InterruptedException {
-        return bookingService.addBooking(eventId, visitorId);
+    public String addBooking(@RequestParam String eventId, String userId, Date bookingDate) throws ExecutionException, InterruptedException {
+        String bookingId = UUID.randomUUID().toString();
+        booking booking = new booking(bookingId, userId, eventId, bookingDate);
+        return bookingService.addBooking(booking);
     }
 
     // Retrieve a Booking
