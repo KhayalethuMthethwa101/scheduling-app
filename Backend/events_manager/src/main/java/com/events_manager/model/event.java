@@ -1,7 +1,6 @@
 package com.events_manager.model;
-import com.google.type.DateTime;
 
-import java.time.LocalDateTime;
+import com.google.cloud.Timestamp;
 import java.util.List;
 
 public class event {
@@ -10,10 +9,10 @@ public class event {
     public String eventDescription;
     public String location;
     public String status;
-    public LocalDateTime dateOfEvent;
+    public Timestamp dateOfEvent;
     public List<user> attendees;
 
-    public event(String eventId, String eventName, String eventDescription, String location, String status, LocalDateTime dateOfEvent) {
+    public event(String eventId, String eventName, String eventDescription, String location, String status, Timestamp dateOfEvent) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
@@ -21,7 +20,9 @@ public class event {
         this.status = status;
         this.dateOfEvent = dateOfEvent;
     }
+    public event(){
 
+    }
     public String getLocation() {
         return location;
     }
@@ -62,11 +63,11 @@ public class event {
         this.status = status;
     }
 
-    public LocalDateTime getDateOfEvent() {
+    public Timestamp getDateOfEvent() {
         return dateOfEvent;
     }
 
-    public void setDateOfEvent(LocalDateTime dateOfEvent) {
+    public void setDateOfEvent(Timestamp dateOfEvent) {
         this.dateOfEvent = dateOfEvent;
     }
 

@@ -1,14 +1,16 @@
 package com.events_manager.model;
 import com.events_manager.model.*;
+import com.google.cloud.Timestamp;
+
 import java.util.Date;
 
 public class booking {
     private String bookingId;
     private String userId;
     private String eventId;
-    public Date bookingDate;
+    public Timestamp bookingDate;
 
-    public booking(String bookingId, String userId, String eventId, Date bookingDate) {
+    public booking(String bookingId, String userId, String eventId, Timestamp bookingDate) {
         this.bookingId = bookingId;
         this.userId = userId;
         this.eventId = eventId;
@@ -42,11 +44,11 @@ public class booking {
         this.eventId = eventId;
     }
 
-    public Date getBookingDate() {
+    public Timestamp getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(Date bookingDate) {
+    public void setBookingDate(Timestamp bookingDate) {
         this.bookingDate = bookingDate;
     }
 }

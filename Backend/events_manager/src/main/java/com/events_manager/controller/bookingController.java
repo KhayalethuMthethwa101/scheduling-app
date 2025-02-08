@@ -2,6 +2,7 @@ package com.events_manager.controller;
 import java.util.Date;
 import java.util.List;
 
+import com.google.cloud.Timestamp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.events_manager.service.*;
@@ -19,7 +20,7 @@ public class bookingController {
 
     // Create a Booking (Only Visitors Allowed)
     @PostMapping
-    public String addBooking(@RequestParam String eventId, String userId, Date bookingDate) throws ExecutionException, InterruptedException {
+    public String addBooking(@RequestParam String eventId, String userId, Timestamp bookingDate) throws ExecutionException, InterruptedException {
         String bookingId = UUID.randomUUID().toString();
         booking booking = new booking(bookingId, userId, eventId, bookingDate);
         return bookingService.addBooking(booking);

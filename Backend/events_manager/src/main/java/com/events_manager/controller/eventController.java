@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import com.events_manager.service.eventService;
 import com.events_manager.model.event;
 
+import com.google.cloud.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +28,7 @@ public class eventController {
     }
 
     @PostMapping
-    public String createEvent(@RequestParam String eventName, String evenDescription, String location, String status, LocalDateTime dateOfEvent) throws ExecutionException, InterruptedException {
+    public String createEvent(@RequestParam String eventName, String evenDescription, String location, String status, Timestamp dateOfEvent) throws ExecutionException, InterruptedException {
         String eventId = UUID.randomUUID().toString();
         event event = new event(eventId, eventName, evenDescription, location, status, dateOfEvent);
         return eventService.createEvent(event);
