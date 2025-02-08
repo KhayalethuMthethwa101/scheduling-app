@@ -17,7 +17,7 @@ public class userController {
         this.userService=userService;
     }
 
-    @GetMapping("/gerUser")
+    @GetMapping("/getUser")
     public List<user> getAllUsers() throws ExecutionException, InterruptedException {
         return userService.getAllUsers();
     }
@@ -29,7 +29,7 @@ public class userController {
         return userService.addUser(user);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/getUser/{id}")
     public user getUser(@PathVariable String id) throws ExecutionException, InterruptedException {
         return userService.getUser(id);
     }
