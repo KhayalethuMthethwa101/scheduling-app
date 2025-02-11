@@ -7,7 +7,7 @@ import About from './pages/About'
 import Contact from './pages/Contacts'
 import MyProfile from './pages/MyProfile'
 import MyBookings from './pages/MyBookings'
-import Booking from './pages/Booking'
+import EventInfo from './pages/EventInfo'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 
@@ -18,13 +18,13 @@ const App = () => {
       <Routes>
         <Route path='/' element={<Home />} />
         <Route path='/events' element={<Events />} />
-        <Route path='/events/:catagory' element={<Events />} />
+        <Route path='/events/:category' element={<Events />} />
         <Route path='/login' element={<Login />} />
         <Route path='/about' element={<About />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/myprofile' element={<MyProfile />} />
         <Route path='/mybookings' element={<MyBookings />} />
-        <Route path='/booking/:eventId' element={<Booking />} />
+        <Route path='/booking/:eventId' element={<EventInfo />} />
       </Routes>
       <Footer />
     </div>

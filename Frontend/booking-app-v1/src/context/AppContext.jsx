@@ -5,13 +5,14 @@ export const AppContext = createContext()
 
 const AppContextProvider = (props) => {
 
+    const currencySymbol = 'R'
 
     const value = {
-        events
+        events, currencySymbol
     }
 
     return(
-        <AppContext.Provider value={value}>
+        <AppContext.Provider value={value}> 
             {props.children}
         </AppContext.Provider>
     )

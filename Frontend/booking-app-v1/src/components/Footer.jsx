@@ -3,17 +3,18 @@ import { assets } from '../assets/assets'
 
 const Footer = () => {
   return (
-    <div>
-        <div>
+    <div className='md:mx-10'>
+        <div className='flex flex-col sm:grid grid-cols-[3fr_1fr_1fr] gap-14 my-10 mt-40 text-sm'>
             {/* -------Left Section --------- */}
             <div>
-                <img src={assets.logo} alt=''/>
-                <p>This was created by Khayalethu Mthethwa, with a special thank you to fellow Youtuber GreatStack, for the template and design of the UI. I out in over 50 hours in for this project just to get it to send dat and post data. I hope my efforts were not in vain.</p>
+                <img className='mb-15  w-40' src={assets.logo} alt=''/>
+                <p className='w-full md:w-2/3 text-gray-600 leading-6'>This was created by Khayalethu Mthethwa, with a special thank you to fellow Youtuber GreatStack, for the template and design of the UI.</p>
+                <p className='w-full md:w-2/3 text-gray-600 leading-6'> I hope my efforts were not in vain.</p>
             </div>
             {/* -------Center Section --------- */}
             <div>
-                <p>COMPANY: UNIVERSITY OF CAPE TOWN</p>
-                <ul>
+                <p className='text-xl font-medium mb-5'>UNIVERSITY OF CAPE TOWN</p>
+                <ul className='flex flex-col gap-2 text-gray-600'>
                     <li>Home</li>
                     <li>About Us</li>
                     <li>Contact Us</li>
@@ -22,8 +23,8 @@ const Footer = () => {
             </div>
             {/* -------Right Section --------- */}
             <div>
-                <p>GET IN TOUCH</p>
-                <ul>
+                <p className='text-xl font-medium mb-5'>GET IN TOUCH</p>
+                <ul className='flex flex-col gap-2 text-gray-600'>
                     <li>+27 76 873 8389</li>
                     <li>khaylethumthethwa16@gmail.com</li>
                 </ul>
@@ -32,7 +33,7 @@ const Footer = () => {
         {/* ----------------Copyright Text------------ */}
         <div>
             <hr />
-            <p>Copyright 2024@ EventMaster - All Rights Reserved.</p>
+            <p className='py-5 text-sm text-center'>Copyright 2024@ EventMaster - All Rights Reserved.</p>
         </div>
     </div>
   )

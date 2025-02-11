@@ -18,6 +18,10 @@ import music_category from './music_category.png'
 import sports_category from './sports_category.png'
 import other_category from './other_category.png'
 import banner_image from './Banner.png'
+import info_icon from './info_icon.png'
+import verified_icon from './verified_icon.png'
+import about_us from './about_us.png'
+import contact_us from './contact_us.png'
 
 export const assets = {
     fes1,
@@ -33,32 +37,36 @@ export const assets = {
     dropdown_icon,
     arrow_icon,
     header_icon,
-    banner_image
+    banner_image,
+    info_icon,
+    verified_icon,
+    about_us,
+    contact_us
 }
 
-export const specialityData = [
+export const categoryData = [
     {
-        speciality: 'Academic Category',
+        speciality: 'Academic',
         image: academic_category
     },
     {
-        speciality: 'Art Category',
+        speciality: 'Art',
         image: art_category
     },
     {
-        speciality: 'Motorsport Category',
+        speciality: 'Motorsport',
         image: motorsport_category
     },
     {
-        speciality: 'Music Category',
+        speciality: 'Music',
         image: music_category
     },
     {
-        speciality: 'Sport Category',
+        speciality: 'Sport',
         image: sports_category
     },
     {
-        speciality: 'Other Category',
+        speciality: 'Other',
         image: other_category
     },
 ]
@@ -68,9 +76,14 @@ export const events = [
         _id: 'fes1',
         name: 'Event name',
         description: 'Event description',
+        date: '2025/03/20',
+        time: '14h00',
+        capacity: 150,
         image: fes1,
-        category: 'Event Category',
+        category: 'Other',
         rating: 5,
+        comments: 'some comments',
+        rsvps: ['user1', 'user2','user3'],
         address: {
             line1: '81 Lower Wrensch Rd',
             line2: 'Observatory, Cape Town'
@@ -80,9 +93,14 @@ export const events = [
         _id: 'fes2',
         name: 'Event name',
         description: 'Event description',
+        date: '2025/03/20',
+        time: '14h00',
+        capacity: 150,
         image: fes2,
-        category: 'Event Category',
+        category: 'Other',
         rating: 5,
+        comments: 'some comments',
+        rsvps: ['user1', 'user2','user3'],
         address: {
             line1: '81 Lower Wrensch Rd',
             line2: 'Observatory, Cape Town'
@@ -92,9 +110,14 @@ export const events = [
         _id: 'fes3',
         name: 'Event name',
         description: 'Event description',
+        date: '2025/03/20',
+        time: '14h00',
+        capacity: 150,
         image: fes3,
-        category: 'Event Category',
+        category: 'Music',
         rating: 5,
+        comments: 'some comments',
+        rsvps: ['user1', 'user2','user3'],
         address: {
             line1: '81 Lower Wrensch Rd',
             line2: 'Observatory, Cape Town'
@@ -104,9 +127,14 @@ export const events = [
         _id: 'fes4',
         name: 'Event name',
         description: 'Event description',
+        date: '2025/03/20',
+        time: '14h00',
+        capacity: 150,
         image: fes4,
-        category: 'Event Category',
+        category: 'Event',
         rating: 5,
+        comments: 'some comments',
+        rsvps: ['user1', 'user2','user3'],
         address: {
             line1: '81 Lower Wrensch Rd',
             line2: 'Observatory, Cape Town'
@@ -116,9 +144,14 @@ export const events = [
         _id: 'fes5',
         name: 'Event name',
         description: 'Event description',
+        date: '2025/03/20',
+        time: '14h00',
+        capacity: 150,
         image: fes5,
-        category: 'Event Category',
+        category: 'Event',
         rating: 5,
+        comments: 'some comments',
+        rsvps: ['user1', 'user2','user3'],
         address: {
             line1: '81 Lower Wrensch Rd',
             line2: 'Observatory, Cape Town'
@@ -128,9 +161,14 @@ export const events = [
         _id: 'fes6',
         name: 'Event name',
         description: 'Event description',
+        date: '2025/03/20',
+        time: '14h00',
+        capacity: 150,
         image: fes6,
-        category: 'Event Category',
+        category: 'Event',
         rating: 5,
+        comments: 'some comments',
+        rsvps: ['user1', 'user2','user3'],
         address: {
             line1: '81 Lower Wrensch Rd',
             line2: 'Observatory, Cape Town'
@@ -140,9 +178,14 @@ export const events = [
         _id: 'fes7',
         name: 'Event name',
         description: 'Event description',
+        date: '2025/03/20',
+        time: '14h00',
+        capacity: 150,
         image: fes7,
-        category: 'Event Category',
+        category: 'Event',
         rating: 5,
+        comments: 'some comments',
+        rsvps: ['user1', 'user2','user3'],
         address: {
             line1: '81 Lower Wrensch Rd',
             line2: 'Observatory, Cape Town'
@@ -152,9 +195,14 @@ export const events = [
         _id: 'fes8',
         name: 'Event name',
         description: 'Event description',
+        date: '2025/03/20',
+        time: '14h00',
+        capacity: 150,
         image: fes8,
-        category: 'Event Category',
+        category: 'Event',
         rating: 5,
+        comments: 'some comments',
+        rsvps: ['user1', 'user2','user3'],
         address: {
             line1: '81 Lower Wrensch Rd',
             line2: 'Observatory, Cape Town'
