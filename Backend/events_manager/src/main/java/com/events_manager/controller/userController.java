@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class userController {
     private final userService userService;
 
@@ -17,7 +17,7 @@ public class userController {
         this.userService=userService;
     }
 
-    @GetMapping("/getUser")
+    @GetMapping
     public List<user> getAllUsers() throws ExecutionException, InterruptedException {
         return userService.getAllUsers();
     }
@@ -29,7 +29,7 @@ public class userController {
         return userService.addUser(user);
     }
 
-    @GetMapping("/getUser/{id}")
+    @GetMapping("/{id}")
     public user getUser(@PathVariable String id) throws ExecutionException, InterruptedException {
         return userService.getUser(id);
     }
