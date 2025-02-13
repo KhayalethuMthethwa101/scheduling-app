@@ -22,6 +22,8 @@ import info_icon from './info_icon.png'
 import verified_icon from './verified_icon.png'
 import about_us from './about_us.png'
 import contact_us from './contact_us.png'
+import menu_icon from './menu.png'
+import cross_icon from './cross_icon.png'
 
 export const assets = {
     fes1,
@@ -41,7 +43,9 @@ export const assets = {
     info_icon,
     verified_icon,
     about_us,
-    contact_us
+    contact_us,
+    menu_icon,
+    cross_icon
 }
 
 export const categoryData = [

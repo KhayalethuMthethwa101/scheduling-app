@@ -8,6 +8,7 @@ const Booking = () => {
   const { category } = useParams()
   const { events } = useContext(AppContext)
   const [filterEvent, setFilterEvent] = useState([])
+  const [showFilter, setShowFilter] = useState(false)
   const navigate = useNavigate()
 
 
@@ -28,7 +29,8 @@ const Booking = () => {
     <div>
         <p className='text-gray-600'>Browse through you favourite events.</p>
         <div className='flex flex-col sm:flex-row items-start gap-5 mt-5'>
-          <div className='flex flex-col gap-4 text-sm text-gray-600'>
+          <button className={`py-1 px-3 border rounded text-sm transition-all sm:hidden ${showFilter ? 'bg-primary text-white' : ''}`} onClick={()=>setShowFilter(prev=> !prev)}>Filters</button>
+          <div className={`flex-col gap-4 text-sm text-gray-600 ${showFilter ? 'flex': 'hidden sm:flex'}`}>
             <p onClick={()=> category ==='Academic' ? navigate('/events'):navigate('/events/Academic')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${category ==="Academic" ? "bg-indigo-100 text-black": ""}`}>Academic</p>
             <p onClick={()=> category ==='Art' ? navigate('/events'):navigate('/events/Art')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${category ==="Art" ? "bg-indigo-100 text-black": ""}`}>Art</p>
             <p onClick={()=> category ==='Motorsport' ? navigate('/events'):navigate('/events/Motorsport')} className={`w-[94vw] sm:w-auto pl-3 py-1.5 pr-16 border border-gray-300 rounded transition-all cursor-pointer ${category ==="Motorsport" ? "bg-indigo-100 text-black": ""}`}>Motorsport</p>
