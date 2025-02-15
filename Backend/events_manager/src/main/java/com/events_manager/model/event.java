@@ -9,20 +9,31 @@ public class event {
     public String eventDescription;
     public String location;
     public String status;
-    public Timestamp dateOfEvent;
+    public String dateOfEvent;
+    public String timeOfEvent;
     public List<user> attendees;
 
-    public event(String eventId, String eventName, String eventDescription, String location, String status, Timestamp dateOfEvent) {
+    public event(String eventId, String eventName, String eventDescription, String location, String status, String dateOfEvent,  String timeOfEvent) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.location = location;
         this.status = status;
         this.dateOfEvent = dateOfEvent;
+        this.timeOfEvent = timeOfEvent;
     }
     public event(){
 
     }
+    public String getTimeOfEvent() {
+        return timeOfEvent;
+    }
+
+    public void setTimeOfEvent(String timeOfEvent) {
+        this.timeOfEvent = timeOfEvent;
+    }
+
+
     public String getLocation() {
         return location;
     }
@@ -63,11 +74,11 @@ public class event {
         this.status = status;
     }
 
-    public Timestamp getDateOfEvent() {
+    public String getDateOfEvent() {
         return dateOfEvent;
     }
 
-    public void setDateOfEvent(Timestamp dateOfEvent) {
+    public void setDateOfEvent(String dateOfEvent) {
         this.dateOfEvent = dateOfEvent;
     }
 

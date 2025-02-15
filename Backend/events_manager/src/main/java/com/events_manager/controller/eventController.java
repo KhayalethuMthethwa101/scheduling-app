@@ -1,15 +1,11 @@
 package com.events_manager.controller;
-import com.events_manager.service.bookingService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.events_manager.service.eventService;
 import com.events_manager.model.event;
 
-import com.google.cloud.Timestamp;
-import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -27,11 +23,10 @@ public class eventController {
         return eventService.getAllEvents();
     }
 
-    @PostMapping
-    public String createEvent(@RequestParam String eventName, String evenDescription, String location, String status, Timestamp dateOfEvent) throws ExecutionException, InterruptedException {
-        String eventId = UUID.randomUUID().toString();
-        event event = new event(eventId, eventName, evenDescription, location, status, dateOfEvent);
-        return eventService.createEvent(event);
+    @PostMapping("/addEvent")
+    public void createEvent(@RequestBody event event) throws ExecutionException, InterruptedException {
+        eventService.createEvent(event);
+//        ResponseEntity.ok("{'response': 'Event received'}");
     }
 
     @GetMapping("{eventId}")
@@ -44,11 +39,11 @@ public class eventController {
         return eventService.deleteEvent(id);
     }
 
-    // Update Event Status
-    @PostMapping("/{eventId}/update-status")
-    public void updateEventStatus(@PathVariable String eventId) throws ExecutionException, InterruptedException {
-        eventService.updateEventStatus(eventId);
-    }
+//    // Update Event Status
+//    @PostMapping("/{eventId}/update-status")
+//    public void updateEventStatus(@PathVariable String eventId) throws ExecutionException, InterruptedException {
+//        eventService.updateEventStatus(eventId);
+//    }
 
     // Mark Visitor as Attended
     @PostMapping("/{eventId}&{userId}")

@@ -7,7 +7,7 @@ import com.events_manager.model.*;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/feedbacks")
+@RequestMapping("/api/v1/feedbacks")
 public class feedbackController {
     private final feedbackService feedbackService;
 
@@ -18,13 +18,13 @@ public class feedbackController {
 
     // Submit Feedback (Only Visitors Who Attended the Event)
     @PostMapping
-    public String addFeedback(
-            @RequestParam String eventId,
-            @RequestParam String visitorId,
-            @RequestParam int rating,
-            @RequestParam int recommendation,
-            @RequestParam String comment) throws ExecutionException, InterruptedException {
-        return feedbackService.addFeedback(eventId, visitorId, rating, recommendation, comment);
+    public String addFeedback(@RequestBody feedback feedback) throws ExecutionException, InterruptedException {
+        return feedbackService.addFeedback(feedback);
+    }
+
+    @GetMapping
+    public List<feedback> getFeedback() throws ExecutionException, InterruptedException {
+        return feedbackService.getAllFeedback();
     }
 
     // Retrieve Feedback by ID

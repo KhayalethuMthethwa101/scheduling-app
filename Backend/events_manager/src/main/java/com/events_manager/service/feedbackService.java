@@ -13,10 +13,17 @@ import java.util.concurrent.ExecutionException;
 public class feedbackService {
     Firestore firestore = FirestoreClient.getFirestore();
 
-    public String addFeedback(String eventId, String visitorId, int rating, int recommendation, String comment) throws ExecutionException, InterruptedException {
+    public List<feedback> getAllFeedback() throws ExecutionException, InterruptedException {
+        ApiFuture<QuerySnapshot> future = firestore.collection("feedbacks").get();
+        List<feedback> feedbackList = new ArrayList<>();
+
+        for (DocumentSnapshot document : future.get().getDocuments()) {
+            feedbackList.add(document.toObject(feedback.class));
+        }
+        return feedbackList;
+    }
+    public String addFeedback(feedback feedback) throws ExecutionException, InterruptedException {
         // Save feedback
-        String feedbackId = UUID.randomUUID().toString();
-        feedback feedback = new feedback(feedbackId, eventId, visitorId, rating, recommendation, comment);
         DocumentReference docRef = firestore.collection("feedbacks").document(feedback.getFeedbackId());
         ApiFuture<WriteResult> future = docRef.set(feedback);
         return future.get().getUpdateTime().toString();

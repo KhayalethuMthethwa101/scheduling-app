@@ -13,11 +13,16 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/bookings")
+@RequestMapping("/api/v1/bookings")
 public class bookingController {
     @Autowired
     private bookingService bookingService;
 
+    // Retrieve All Bookings
+    @GetMapping
+    public List<booking> getAllBookings() throws ExecutionException, InterruptedException {
+        return bookingService.getAllBookings();
+    }
     // Create a Booking (Only Visitors Allowed)
     @PostMapping
     public String addBooking(@RequestParam String eventId, String userId, Timestamp bookingDate) throws ExecutionException, InterruptedException {
@@ -38,9 +43,5 @@ public class bookingController {
         return bookingService.deleteBooking(id);
     }
 
-    // Retrieve All Bookings
-    @GetMapping
-    public List<booking> getAllBookings() throws ExecutionException, InterruptedException {
-        return bookingService.getAllBookings();
-    }
+
 }

@@ -49,34 +49,34 @@ public class eventService {
         return eventList;
     }
 
-    // ✅ Check and update event status
-    public void updateEventStatus(String eventId) throws ExecutionException, InterruptedException {
-        DocumentReference docRef = firestore.collection("events").document(eventId);
-        ApiFuture<DocumentSnapshot> future = docRef.get();
-        DocumentSnapshot document = future.get();
-
-        if (document.exists()) {
-            event event = document.toObject(event.class);
-
-            if (event != null) {
-                LocalDateTime eventDateTime = TimestampConverter.convertToLocalDateTime(event.getDateOfEvent());
-                LocalDateTime now = LocalDateTime.now();
-
-                if (now.isBefore(eventDateTime)) {
-                    firestore.collection("events").document(eventId)
-                            .update("status", "COMING");
-                } else if (now.isAfter(eventDateTime) && now.isBefore(eventDateTime.plusHours(24))) {
-                    firestore.collection("events").document(eventId)
-                            .update("status", "ACTIVE");
-                } else {
-                    firestore.collection("events").document(eventId)
-                            .update("status", "ENDED");
-                }
-            }
-        }else {
-            throw new IllegalArgumentException("Event not found.");
-        }
-    }
+//    // ✅ Check and update event status
+//    public void updateEventStatus(String eventId) throws ExecutionException, InterruptedException {
+//        DocumentReference docRef = firestore.collection("events").document(eventId);
+//        ApiFuture<DocumentSnapshot> future = docRef.get();
+//        DocumentSnapshot document = future.get();
+//
+//        if (document.exists()) {
+//            event event = document.toObject(event.class);
+//
+//            if (event != null) {
+//                LocalDateTime eventDateTime = TimestampConverter.convertToLocalDateTime(event.getDateOfEvent());
+//                LocalDateTime now = LocalDateTime.now();
+//
+//                if (now.isBefore(eventDateTime)) {
+//                    firestore.collection("events").document(eventId)
+//                            .update("status", "COMING");
+//                } else if (now.isAfter(eventDateTime) && now.isBefore(eventDateTime.plusHours(24))) {
+//                    firestore.collection("events").document(eventId)
+//                            .update("status", "ACTIVE");
+//                } else {
+//                    firestore.collection("events").document(eventId)
+//                            .update("status", "ENDED");
+//                }
+//            }
+//        }else {
+//            throw new IllegalArgumentException("Event not found.");
+//        }
+//    }
 
     public void addAttendee(String eventId, String visitorId) throws ExecutionException, InterruptedException {
         DocumentReference docRef = firestore.collection("events").document(eventId);

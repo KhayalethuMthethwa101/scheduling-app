@@ -20,13 +20,13 @@ const Login = () => {
           {
             state === "Sign Up" && <div className='w-full'>
               <p>Full Name</p>
-              <input className='border vorder-zinc-300 rounded w-full p-2 mt-1' type='text' onChange={(e)=>setName(e.target.name)} value={name} required/>
+              <input className='border vorder-zinc-300 rounded w-full p-2 mt-1' type='text' onChange={(e)=>setName(e.target.name)} value={name} placeholder='Joe Doe' required/>
             </div>
           }
           
           <div className='w-full'>
             <p>Email</p>
-            <input className='border vorder-zinc-300 rounded w-full p-2 mt-1' type='email' onChange={(e)=>setEmail(e.target.name)} value={email} required/>
+            <input className='border vorder-zinc-300 rounded w-full p-2 mt-1' type='email' onChange={(e)=>setEmail(e.target.name)} value={email} placeholder='JohnDoe@eventmaster.com' required/>
           </div>
           <div className='w-full'>
             <p>Password</p>
