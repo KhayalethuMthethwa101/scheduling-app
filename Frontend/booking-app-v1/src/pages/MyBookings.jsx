@@ -6,8 +6,6 @@ import Modal from '../components/modal';
 import FeedbackForm from './FeedbackForm';
 import { useNavigate } from 'react-router-dom';
 
-const REST_API_URL =  'http://localhost:8081/api/v1'
-
 const MyBookings = () => {
 
   const { profileData } = useUser(); // Get the logged-in user's profile data
@@ -24,7 +22,7 @@ const MyBookings = () => {
   useEffect(() => {
     const fetchBookings = async () => {
       try {
-        const response = await axios.get(`${REST_API_URL}/bookings/user/${profileData.email}`);
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/bookings/user/${profileData.email}`);
         setBookings(response.data);
         setLoading(false);
       } catch (error) {
@@ -43,7 +41,7 @@ const MyBookings = () => {
 
   const handleCancel = async (bookingId) => {
     try {
-      await axios.delete(`${REST_API_URL}/bookings/delete/${bookingId}`);
+      await axios.delete(`${import.meta.env.VITE_APP_API_URL}/bookings/delete/${bookingId}`);
       setBookings(bookings.filter(booking => booking.bookingId !== bookingId));
     } catch (error) {
       console.error('Error cancelling booking:', error);

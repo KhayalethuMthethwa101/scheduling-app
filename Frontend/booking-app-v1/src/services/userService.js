@@ -24,7 +24,7 @@ async function fetchEvents() {
         });
     }
 
-fetchEvents();
+// fetchEvents();
 
 const sendData = async () => {
     const data = {
@@ -39,24 +39,23 @@ const sendData = async () => {
     };
 
     try {
-        const response = await fetch(`${REACT_APP_API_URL}/api/v1/users/adduser`, {
-            method: 'POST',
+        const response = await fetch(`${REACT_APP_API_URL}/api/v1/users`, {
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json'
-
             },
-            body: data
         });
 
         // if(!response.ok){
         //     throw new Error('Network response was not ok');
         // }
 
-        console.log('Data from Spring Boot:', response.json());
+        // console.log('Data from Spring Boot:', response.json());
+        return response.json()
     } catch (error) {
         console.error('There was a problem with the fetch operation:', error);
     }
 };
 
 // Call the function
-// sendData();
+console.log(sendData());

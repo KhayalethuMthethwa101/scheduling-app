@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
 import { useUser } from '../context/UserContext';
 
-const REST_API_URL = 'http://localhost:8081/api/v1';
 
 const FeedbackForm = ({ eventId, email }) => {
   const [comment, setComment] = useState('');
@@ -24,7 +23,7 @@ const FeedbackForm = ({ eventId, email }) => {
     };
 
     try {
-      await axios.post(`${REST_API_URL}/feedback`, feedbackData);
+      await axios.post(`${import.meta.env.VITE_APP_API_URL}/feedback`, feedbackData);
       setSuccess('Feedback submitted successfully!');
       setError(null);
       setComment('');

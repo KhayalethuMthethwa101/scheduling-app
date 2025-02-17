@@ -1,6 +1,6 @@
 {
   "hosting": {
-    "public": "../booking-app-v1",
+    "public": "dist",
     "ignore": [
       "firebase.json",
       "**/.*",
@@ -12,23 +12,5 @@
         "destination": "/index.html"
       }
     ]
-  },
-  "emulators": {
-    "auth": {
-      "port": 9099
-    },
-    "firestore": {
-      "port": 8080
-    },
-    "functions": {
-      "port": 5001
-    },
-    "hosting": {
-      "port": 5000
-    },
-    "ui": {
-      "enabled": true
-    }
   }
-  
 }

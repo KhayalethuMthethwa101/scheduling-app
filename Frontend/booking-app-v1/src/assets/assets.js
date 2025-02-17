@@ -24,7 +24,6 @@ import about_us from './about_us.png'
 import contact_us from './contact_us.png'
 import menu_icon from './menu.png'
 import cross_icon from './cross_icon.png'
-import axios from 'axios'
 import add_icon from './add_icon.png'
 
 export const assets = {
@@ -78,5 +77,4 @@ export const categoryData = [
     },
 ]
 
-const response = await axios.get(`http://localhost:8081/api/v1/events`)
-export const events = response.data
+

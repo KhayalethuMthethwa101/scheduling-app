@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
-const REST_API_URL = 'http://localhost:8081/api/v1';
 
 const CreateEvent = () => {
   const [eventDetails, setEventDetails] = useState({
@@ -40,7 +39,7 @@ const CreateEvent = () => {
     formData.append('event', new Blob([JSON.stringify(eventData)], { type: 'application/json' }));
 
     try {
-      await axios.post(`${REST_API_URL}/events/create`, formData, {
+      await axios.post(`${import.meta.env.VITE_APP_API_URL}/events/create`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }

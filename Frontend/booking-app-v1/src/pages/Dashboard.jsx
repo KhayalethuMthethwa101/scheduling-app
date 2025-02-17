@@ -4,7 +4,6 @@ import { useUser } from '../context/UserContext';
 import { useNavigate } from 'react-router-dom';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
-const REST_API_URL = 'http://localhost:8081/api/v1/bookings';
 
 const Dashboard = () => {
   const { profileData } = useUser();
@@ -24,9 +23,9 @@ const Dashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const bookingsResponse = await axios.get(`${REST_API_URL}/admin/bookings`);
-      const genderResponse = await axios.get(`${REST_API_URL}/admin/gender-distribution`);
-      const ageResponse = await axios.get(`${REST_API_URL}/admin/age-distribution`);
+      const bookingsResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL}/admin/bookings`);
+      const genderResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL}/admin/gender-distribution`);
+      const ageResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL}/admin/age-distribution`);
 
       setBookings(bookingsResponse.data);
       setGenderDistribution(genderResponse.data);

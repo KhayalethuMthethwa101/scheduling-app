@@ -3,7 +3,6 @@ import { assets } from '../assets/assets'
 import axios from 'axios';
 import { useUser } from '../context/UserContext'
 
-const REST_API_URL =  'http://localhost:8081/api/v1'
 
 const MyProfile = () => {
   const { profileData } = useUser();
@@ -13,7 +12,7 @@ const MyProfile = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get(`${REST_API_URL}/users/${profileData.email}`);
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/users/${profileData.email}`);
         setUserData(response.data);
       } catch (error) {
         console.error('Error fetching user data:', error);
@@ -26,7 +25,7 @@ const MyProfile = () => {
 
   const handleSave = async () => {
     try {
-      await axios.put(`${REST_API_URL}/users/update`, userData);
+      await axios.put(`${import.meta.env.VITE_APP_API_URL}/users/update`, userData);
       setIsEdit(false);
     } catch (error) {
       console.error('Error updating user data:', error);

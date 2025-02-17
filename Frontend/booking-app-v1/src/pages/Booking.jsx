@@ -26,6 +26,10 @@ const Booking = () => {
     applyFilter()
   },[events, category])
 
+  if (!Array.isArray(filterEvent)) {
+    return <div>No events available.</div>;
+  }
+
   return (
     <div>
         <p className='text-gray-600'>Browse through you favourite events.</p>

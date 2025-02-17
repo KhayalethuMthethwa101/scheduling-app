@@ -1,12 +1,26 @@
-import React, { createContext} from "react";
-import { events } from "../assets/assets";
+import React, { createContext, useState, useEffect } from "react";
+import axios from 'axios';
 
 export const AppContext = createContext()
 // Create a context for user roles
 
 const AppContextProvider = (props) => {
 
-    const currencySymbol = 'R'
+    const [events, setEvents] = useState([]);
+    const currencySymbol = 'R';
+
+    useEffect(() => {
+        const fetchEvents = async () => {
+            try {
+                const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/events`);
+                setEvents(response.data);
+            } catch (error) {
+                console.error('Error fetching events:', error);
+            }
+        };
+
+        fetchEvents();
+    }, []);
 
     const value = {
         events, currencySymbol

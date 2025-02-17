@@ -2,12 +2,10 @@ import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
 import { auth } from '../services/firebase';
-import { AppContext } from '../context/AppContext';
 import { useUser } from '../context/UserContext';
 import axios from 'axios';
 import Modal from '../components/modal';
 
-const REST_API_URL =  'http://localhost:8081/api/v1'
 
 const Login = () => {
 
@@ -40,7 +38,7 @@ const Login = () => {
           role: 'user',
         };
         // Create user in the Spring Boot backend
-        await axios.post(`${REST_API_URL}/users/adduser`, userProfile);
+        await axios.post(`${import.meta.env.VITE_APP_API_URL}/users/adduser`, userProfile);
         setProfileData(userProfile);
         setSuccess('Account created successfully!');
         setError(null)
@@ -57,7 +55,7 @@ const Login = () => {
     try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        const response = await axios.get(`${REST_API_URL}/users/${user.email}`);
+        const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/users/${user.email}`);
         const profileData = response.data;
         setProfileData(profileData);
         console.log(setProfileData)

@@ -10,8 +10,6 @@ import { useNavigate } from 'react-router-dom'
 import Modal from '../components/modal';
 
 
-const REST_API_URL =  'http://localhost:8081/api/v1'
-
 const EventInfo = () => {
 
   const { eventId } = useParams()
@@ -46,7 +44,7 @@ const EventInfo = () => {
         bookingDate: new Date().toISOString().split('T')[0], // Format as YYYY-MM-DD
       };
 
-      await axios.post(`${REST_API_URL}/bookings`, bookingData);
+      await axios.post(`${import.meta.env.VITE_APP_API_URL}/bookings`, bookingData);
       setSuccess('RSVP successful!');
       navigate('/events')
       setError(null);
