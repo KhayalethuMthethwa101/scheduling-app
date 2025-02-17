@@ -9,6 +9,7 @@ import com.events_manager.service.*;
 import com.events_manager.model.*;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -25,9 +26,7 @@ public class bookingController {
     }
     // Create a Booking (Only Visitors Allowed)
     @PostMapping
-    public String addBooking(@RequestParam String eventId, String userId, Timestamp bookingDate) throws ExecutionException, InterruptedException {
-        String bookingId = UUID.randomUUID().toString();
-        booking booking = new booking(bookingId, userId, eventId, bookingDate);
+    public String addBooking(@RequestBody booking booking) throws ExecutionException, InterruptedException {
         return bookingService.addBooking(booking);
     }
 
@@ -38,10 +37,28 @@ public class bookingController {
     }
 
     // Delete a Booking
-    @DeleteMapping("/{id}")
-    public String deleteBooking(@PathVariable String id) throws ExecutionException, InterruptedException {
-        return bookingService.deleteBooking(id);
+    @DeleteMapping("/delete/{bookingId}")
+    public void deleteBooking(@PathVariable String bookingId) throws ExecutionException, InterruptedException {
+        bookingService.deleteBooking(bookingId);
+    }
+    @GetMapping("/user/{email}")
+    public List<booking> getBookingsByEmail(@PathVariable String email) throws ExecutionException, InterruptedException {
+        return bookingService.getBookingsByEmail(email);
     }
 
+    @GetMapping("/admin/bookings")
+    public List<Map<String, Object>> getEventBookings() throws ExecutionException, InterruptedException {
+        return bookingService.getEventBookings();
+    }
+
+    @GetMapping("/admin/gender-distribution")
+    public List<Map<String, Object>> getGenderDistribution() throws ExecutionException, InterruptedException {
+        return bookingService.getGenderDistribution();
+    }
+
+    @GetMapping("/admin/age-distribution")
+    public List<Map<String, Object>> getAgeDistribution() throws ExecutionException, InterruptedException {
+        return bookingService.getAgeDistribution();
+    }
 
 }

@@ -8,7 +8,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
 public class userController {
     private final userService userService;
 
@@ -23,21 +23,23 @@ public class userController {
     }
 
     @PostMapping("/adduser")
-    public String addUser(@RequestParam String userName, String email, String password, String phoneNumber, String role) throws ExecutionException, InterruptedException {
-        String userId = UUID.randomUUID().toString();
-        user user = new user(userId, userName, email, password, phoneNumber, role);
+    public String addUser(@RequestBody user user) throws ExecutionException, InterruptedException {
         return userService.addUser(user);
     }
 
-    @GetMapping("/{id}")
-    public user getUser(@PathVariable String id) throws ExecutionException, InterruptedException {
-        return userService.getUser(id);
+    @GetMapping("/{email}")
+    public user getUser(@PathVariable String email) throws ExecutionException, InterruptedException {
+        return userService.getUser(email);
     }
 
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable String id) throws ExecutionException, InterruptedException {
-        return userService.deleteUser(id);
+    @DeleteMapping("/{email}")
+    public String deleteUser(@PathVariable String email) throws ExecutionException, InterruptedException {
+        return userService.deleteUser(email);
     }
 
+    @PutMapping("/update")
+    public user updateUser(@RequestBody user user) throws ExecutionException, InterruptedException {
+        return userService.updateUser(user);
+    }
 
 }

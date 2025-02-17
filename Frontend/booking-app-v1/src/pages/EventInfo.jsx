@@ -3,26 +3,64 @@ import { useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext'
 import { assets } from '../assets/assets'
 import RelatedEvents from '../components/relatedEvents'
+import axios from 'axios';
+import { useUser } from '../context/UserContext';
+import { v4 as uuidv4 } from 'uuid';
+import { useNavigate } from 'react-router-dom'
+import Modal from '../components/modal';
 
+
+const REST_API_URL =  'http://localhost:8081/api/v1'
 
 const EventInfo = () => {
 
   const { eventId } = useParams()
   const { events, currencySymbol } = useContext(AppContext)
-
   const [eventInfo, setEventInfo] = useState(null)
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
+  const { profileData } = useUser();
+  const navigate = useNavigate()
 
   const fetchEvent = async () => {
-    const eventInfo = events.find(event => event._id === eventId)
+    const eventInfo = events.find(event => event.eventId === eventId)
     setEventInfo(eventInfo)   
-    console.log(eventInfo);
-     
   }
+
 
   useEffect(()=>{
     fetchEvent()
   }, [events, eventId])
 
+  const handleRsvp = async () => {
+    if (!profileData || !profileData.email) {
+      setError('User profile data is not available.');
+      return;
+    }
+
+    try {
+      const bookingData = {
+        bookingId: uuidv4(),
+        email: profileData.email,
+        eventId: eventInfo.eventId,
+        bookingDate: new Date().toISOString().split('T')[0], // Format as YYYY-MM-DD
+      };
+
+      await axios.post(`${REST_API_URL}/bookings`, bookingData);
+      setSuccess('RSVP successful!');
+      navigate('/events')
+      setError(null);
+    } catch (error) {
+      setError('RSVP failed. Please try again.');
+      setSuccess(null);
+      console.error('Error during RSVP:', error);
+    }
+  }
+
+  const handleCloseModal = () => {
+    setSuccess(null);
+    setError(null);
+  };
 
   return eventInfo && (
     <div>
@@ -46,18 +84,18 @@ const EventInfo = () => {
               <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>
                 Description <img className='w-3' src={assets.info_icon} alt="" />
               </p>
-              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{eventInfo.description}</p>
+              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{eventInfo.eventDescription}</p>
             </div>
             <div>
               <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>Date</p>
-              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{eventInfo.date}</p>
+              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{eventInfo.dateOfEvent}</p>
             </div>
             <div>
               <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>Time</p>
-              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{eventInfo.time}</p>
+              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{eventInfo.timeOfEvent}</p>
             </div>
             <p className='text-gray-500 font-medium mt-4'>
-              Reservation Fee: <span className='text-gray-600'>{currencySymbol}0.00</span>
+              Reservation Fee: <span className='text-gray-600'>{currencySymbol}{eventInfo.fee}</span>
             </p>
           </div>
           
@@ -65,7 +103,9 @@ const EventInfo = () => {
         
         <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'> 
           {/* RSVP Section */}
-          <button className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>RSVP</button>
+          <button onClick={handleRsvp} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>RSVP</button>
+          {error && <Modal message={error} onClose={handleCloseModal} />}
+          {success && <Modal message={success} onClose={handleCloseModal} />}
         </div>
 
         {/* listing related events */}

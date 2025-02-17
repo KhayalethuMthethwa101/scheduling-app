@@ -11,9 +11,13 @@ public class event {
     public String status;
     public String dateOfEvent;
     public String timeOfEvent;
-    public List<user> attendees;
+    public String category;
+    public int capacity;
+    public String fee;
+    public String imageUrl;
 
-    public event(String eventId, String eventName, String eventDescription, String location, String status, String dateOfEvent,  String timeOfEvent) {
+
+    public event(String eventId, String eventName, String eventDescription, String location, String status, String dateOfEvent, String timeOfEvent, String imageUrl,String category, int capacity, String fee) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
@@ -21,10 +25,48 @@ public class event {
         this.status = status;
         this.dateOfEvent = dateOfEvent;
         this.timeOfEvent = timeOfEvent;
+        this.category = category;
+        this.capacity = capacity;
+        this.imageUrl = imageUrl;
+        this.fee = fee;
     }
+
     public event(){
 
     }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
+    public String getFee() {
+        return fee;
+    }
+
+    public void setFee(String fee) {
+        this.fee = fee;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(int capacity) {
+        this.capacity = capacity;
+    }
+
     public String getTimeOfEvent() {
         return timeOfEvent;
     }
@@ -82,11 +124,4 @@ public class event {
         this.dateOfEvent = dateOfEvent;
     }
 
-    public List<user> getAttendees() {
-        return attendees;
-    }
-
-    public void setAttendees(List<user> attendees) {
-        this.attendees = attendees;
-    }
 }

@@ -6,13 +6,13 @@ import java.util.Date;
 
 public class booking {
     private String bookingId;
-    private String userId;
+    private String email;
     private String eventId;
-    public Timestamp bookingDate;
+    public String bookingDate;
 
-    public booking(String bookingId, String userId, String eventId, Timestamp bookingDate) {
+    public booking(String bookingId, String email, String eventId, String bookingDate) {
         this.bookingId = bookingId;
-        this.userId = userId;
+        this.email = email;
         this.eventId = eventId;
         this.bookingDate = bookingDate;
     }
@@ -29,11 +29,11 @@ public class booking {
     }
 
     public String getUserId() {
-        return userId;
+        return email;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUserId(String email) {
+        this.email = email;
     }
 
     public String getEventId() {
@@ -44,11 +44,11 @@ public class booking {
         this.eventId = eventId;
     }
 
-    public Timestamp getBookingDate() {
+    public String getBookingDate() {
         return bookingDate;
     }
 
-    public void setBookingDate(Timestamp bookingDate) {
+    public void setBookingDate(String bookingDate) {
         this.bookingDate = bookingDate;
     }
 }

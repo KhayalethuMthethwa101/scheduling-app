@@ -4,7 +4,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.events_manager.service.eventService;
 import com.events_manager.model.event;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -26,7 +28,6 @@ public class eventController {
     @PostMapping("/addEvent")
     public void createEvent(@RequestBody event event) throws ExecutionException, InterruptedException {
         eventService.createEvent(event);
-//        ResponseEntity.ok("{'response': 'Event received'}");
     }
 
     @GetMapping("{eventId}")
@@ -39,15 +40,12 @@ public class eventController {
         return eventService.deleteEvent(id);
     }
 
-//    // Update Event Status
-//    @PostMapping("/{eventId}/update-status")
-//    public void updateEventStatus(@PathVariable String eventId) throws ExecutionException, InterruptedException {
-//        eventService.updateEventStatus(eventId);
-//    }
-
-    // Mark Visitor as Attended
-    @PostMapping("/{eventId}&{userId}")
-    public void addAttendee(@PathVariable String eventId, String userId) throws ExecutionException, InterruptedException {
-        eventService.addAttendee(eventId, userId);
+    @PostMapping("/create")
+    public event createEvent(@RequestPart("event") event event, @RequestPart("file") MultipartFile file) throws IOException, ExecutionException, InterruptedException {
+        String imageUrl = eventService.uploadImage(file);
+        event.setImageUrl(imageUrl);
+        return eventService.createEvent(event);
     }
+
+
 }

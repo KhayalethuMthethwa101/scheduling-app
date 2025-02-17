@@ -1,7 +1,8 @@
-import { createContext } from "react";
+import React, { createContext} from "react";
 import { events } from "../assets/assets";
 
 export const AppContext = createContext()
+// Create a context for user roles
 
 const AppContextProvider = (props) => {
 
@@ -18,4 +19,4 @@ const AppContextProvider = (props) => {
     )
 }
 
-export default AppContextProvider
+export default AppContextProvider;

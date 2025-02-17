@@ -24,6 +24,8 @@ import about_us from './about_us.png'
 import contact_us from './contact_us.png'
 import menu_icon from './menu.png'
 import cross_icon from './cross_icon.png'
+import axios from 'axios'
+import add_icon from './add_icon.png'
 
 export const assets = {
     fes1,
@@ -45,7 +47,8 @@ export const assets = {
     about_us,
     contact_us,
     menu_icon,
-    cross_icon
+    cross_icon,
+    add_icon
 }
 
 export const categoryData = [
@@ -75,141 +78,5 @@ export const categoryData = [
     },
 ]
 
-export const events = [
-    {
-        _id: 'fes1',
-        name: 'Event name',
-        description: 'Event description',
-        date: '2025/03/20',
-        time: '14h00',
-        capacity: 150,
-        image: fes1,
-        category: 'Other',
-        rating: 5,
-        comments: 'some comments',
-        rsvps: ['user1', 'user2','user3'],
-        address: {
-            line1: '81 Lower Wrensch Rd',
-            line2: 'Observatory, Cape Town'
-        }
-    },
-    {
-        _id: 'fes2',
-        name: 'Event name',
-        description: 'Event description',
-        date: '2025/03/20',
-        time: '14h00',
-        capacity: 150,
-        image: fes2,
-        category: 'Other',
-        rating: 5,
-        comments: 'some comments',
-        rsvps: ['user1', 'user2','user3'],
-        address: {
-            line1: '81 Lower Wrensch Rd',
-            line2: 'Observatory, Cape Town'
-        }
-    },
-    {
-        _id: 'fes3',
-        name: 'Event name',
-        description: 'Event description',
-        date: '2025/03/20',
-        time: '14h00',
-        capacity: 150,
-        image: fes3,
-        category: 'Music',
-        rating: 5,
-        comments: 'some comments',
-        rsvps: ['user1', 'user2','user3'],
-        address: {
-            line1: '81 Lower Wrensch Rd',
-            line2: 'Observatory, Cape Town'
-        }
-    },
-    {
-        _id: 'fes4',
-        name: 'Event name',
-        description: 'Event description',
-        date: '2025/03/20',
-        time: '14h00',
-        capacity: 150,
-        image: fes4,
-        category: 'Event',
-        rating: 5,
-        comments: 'some comments',
-        rsvps: ['user1', 'user2','user3'],
-        address: {
-            line1: '81 Lower Wrensch Rd',
-            line2: 'Observatory, Cape Town'
-        }
-    },
-    {
-        _id: 'fes5',
-        name: 'Event name',
-        description: 'Event description',
-        date: '2025/03/20',
-        time: '14h00',
-        capacity: 150,
-        image: fes5,
-        category: 'Event',
-        rating: 5,
-        comments: 'some comments',
-        rsvps: ['user1', 'user2','user3'],
-        address: {
-            line1: '81 Lower Wrensch Rd',
-            line2: 'Observatory, Cape Town'
-        }
-    },
-    {
-        _id: 'fes6',
-        name: 'Event name',
-        description: 'Event description',
-        date: '2025/03/20',
-        time: '14h00',
-        capacity: 150,
-        image: fes6,
-        category: 'Event',
-        rating: 5,
-        comments: 'some comments',
-        rsvps: ['user1', 'user2','user3'],
-        address: {
-            line1: '81 Lower Wrensch Rd',
-            line2: 'Observatory, Cape Town'
-        }
-    },
-    {
-        _id: 'fes7',
-        name: 'Event name',
-        description: 'Event description',
-        date: '2025/03/20',
-        time: '14h00',
-        capacity: 150,
-        image: fes7,
-        category: 'Event',
-        rating: 5,
-        comments: 'some comments',
-        rsvps: ['user1', 'user2','user3'],
-        address: {
-            line1: '81 Lower Wrensch Rd',
-            line2: 'Observatory, Cape Town'
-        }
-    },
-    {
-        _id: 'fes8',
-        name: 'Event name',
-        description: 'Event description',
-        date: '2025/03/20',
-        time: '14h00',
-        capacity: 150,
-        image: fes8,
-        category: 'Event',
-        rating: 5,
-        comments: 'some comments',
-        rsvps: ['user1', 'user2','user3'],
-        address: {
-            line1: '81 Lower Wrensch Rd',
-            line2: 'Observatory, Cape Town'
-        }
-    }
-]
+const response = await axios.get(`http://localhost:8081/api/v1/events`)
+export const events = response.data

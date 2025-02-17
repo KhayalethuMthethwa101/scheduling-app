@@ -14,13 +14,13 @@ public class userService {
     Firestore firestore = FirestoreClient.getFirestore();
 
     public String addUser(user user) throws ExecutionException, InterruptedException {
-        DocumentReference docRef = firestore.collection("users").document(user.getUserId());
+        DocumentReference docRef = firestore.collection("users").document(user.getEmail());
         ApiFuture<WriteResult> future = docRef.set(user);
         return future.get().getUpdateTime().toString();
     }
 
-    public user getUser(String id) throws ExecutionException, InterruptedException {
-        DocumentReference docRef = firestore.collection("users").document(id);
+    public user getUser(String email) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = firestore.collection("users").document(email);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
 
@@ -31,8 +31,8 @@ public class userService {
         }
     }
 
-    public String deleteUser(String id) throws ExecutionException, InterruptedException {
-        ApiFuture<WriteResult> writeResult = firestore.collection("users").document(id).delete();
+    public String deleteUser(String email) throws ExecutionException, InterruptedException {
+        ApiFuture<WriteResult> writeResult = firestore.collection("users").document(email).delete();
         return writeResult.get().getUpdateTime().toString();
     }
 
@@ -44,5 +44,17 @@ public class userService {
             userList.add(document.toObject(user.class));
         }
         return userList;
+    }
+
+    public user updateUser(user user) throws ExecutionException, InterruptedException{
+        DocumentReference docRef = firestore.collection("users").document(user.getEmail());
+
+        // Update user data in Firestore
+        ApiFuture<WriteResult> writeResult = docRef.set(user);
+
+        // Log the write timestamp
+        System.out.println("Update time : " + writeResult.get().getUpdateTime());
+
+        return user;
     }
 }

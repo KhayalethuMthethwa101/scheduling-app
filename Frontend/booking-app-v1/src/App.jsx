@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, Router } from 'react-router-dom'
 import Home from './pages/home'
 import Events from './pages/Booking'
 import Login from './pages/Login'
@@ -10,6 +10,8 @@ import MyBookings from './pages/MyBookings'
 import EventInfo from './pages/EventInfo'
 import NavBar from './components/NavBar'
 import Footer from './components/Footer'
+import CreateEvent from './pages/CreateEvent'
+import Dashboard from './pages/Dashboard'
 
 const App = () => {
   return (
@@ -21,10 +23,12 @@ const App = () => {
         <Route path='/events/:category' element={<Events />} />
         <Route path='/login' element={<Login />} />
         <Route path='/about' element={<About />} />
+        <Route path="/create-event" element={<CreateEvent />} />
         <Route path='/contact' element={<Contact />} />
         <Route path='/myprofile' element={<MyProfile />} />
         <Route path='/mybookings' element={<MyBookings />} />
         <Route path='/booking/:eventId' element={<EventInfo />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
       <Footer />
     </div>

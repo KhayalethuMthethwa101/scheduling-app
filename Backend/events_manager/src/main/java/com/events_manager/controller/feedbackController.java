@@ -7,7 +7,7 @@ import com.events_manager.model.*;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("/api/v1/feedbacks")
+@RequestMapping("/api/v1/feedback")
 public class feedbackController {
     private final feedbackService feedbackService;
 

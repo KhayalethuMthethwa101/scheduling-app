@@ -1,12 +1,17 @@
 package com.events_manager.service;
-import com.events_manager.util.TimestampConverter;
+import com.google.api.client.util.Value;
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
 import org.springframework.stereotype.Service;
 import com.events_manager.model.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -15,10 +20,9 @@ import java.util.concurrent.ExecutionException;
 public class eventService {
     Firestore firestore = FirestoreClient.getFirestore();
 
-    public String createEvent(event event) throws ExecutionException, InterruptedException {
-        DocumentReference docRef = firestore.collection("events").document(event.getEventId());
-        ApiFuture<WriteResult> future = docRef.set(event);
-        return future.get().getUpdateTime().toString();
+    public event createEvent(event event) throws ExecutionException, InterruptedException {
+        WriteResult result = firestore.collection("events").document(event.getEventId()).set(event).get();
+        return event;
     }
 
     public event getEvent(String eventId) throws ExecutionException, InterruptedException {
@@ -49,37 +53,20 @@ public class eventService {
         return eventList;
     }
 
-//    // ✅ Check and update event status
-//    public void updateEventStatus(String eventId) throws ExecutionException, InterruptedException {
-//        DocumentReference docRef = firestore.collection("events").document(eventId);
-//        ApiFuture<DocumentSnapshot> future = docRef.get();
-//        DocumentSnapshot document = future.get();
-//
-//        if (document.exists()) {
-//            event event = document.toObject(event.class);
-//
-//            if (event != null) {
-//                LocalDateTime eventDateTime = TimestampConverter.convertToLocalDateTime(event.getDateOfEvent());
-//                LocalDateTime now = LocalDateTime.now();
-//
-//                if (now.isBefore(eventDateTime)) {
-//                    firestore.collection("events").document(eventId)
-//                            .update("status", "COMING");
-//                } else if (now.isAfter(eventDateTime) && now.isBefore(eventDateTime.plusHours(24))) {
-//                    firestore.collection("events").document(eventId)
-//                            .update("status", "ACTIVE");
-//                } else {
-//                    firestore.collection("events").document(eventId)
-//                            .update("status", "ENDED");
-//                }
-//            }
-//        }else {
-//            throw new IllegalArgumentException("Event not found.");
-//        }
-//    }
+    @Value("${upload.path}")
+    private String uploadPath = "../assests";
 
-    public void addAttendee(String eventId, String visitorId) throws ExecutionException, InterruptedException {
-        DocumentReference docRef = firestore.collection("events").document(eventId);
-        docRef.update("attendees", FieldValue.arrayUnion(visitorId)).get();
+    public String uploadImage(MultipartFile file) throws IOException {
+        String fileName = file.getOriginalFilename();
+        Path path = Paths.get(uploadPath + File.separator + fileName);
+
+        // Ensure directory exists
+        File directory = new File(uploadPath);
+        if (!directory.exists()) {
+            directory.mkdirs();
+        }
+
+            Files.write(path, file.getBytes());
+        return "/images/" + fileName;
     }
 }

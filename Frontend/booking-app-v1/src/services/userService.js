@@ -22,33 +22,35 @@ async function fetchEvents() {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
-    console.log('Data from Spring Boot (fetch):', response.json());
     }
 
-// fetchEvents();
+fetchEvents();
 
 const sendData = async () => {
     const data = {
-        eventId: '4',
-        eventName: 'Slept on Tuesday',
-        eventDescription: 'Test 3',
-        location: 'Cape Town, Observatory',
-        status: 'Active',
-        dateOfEvent: '2025/02/21'
+        userName: 'DevSpace101',
+        email: 'khayalethumthethwa16@gmail.com',
+        address: '81 Lower Main Rd, Observatory, Cape town',
+        DOB: '1996-01-01',
+        gender: 'Male',
+        password: '123456',
+        phoneNumber: '0768738389',
+        role: 'Admin',
     };
 
     try {
-        const response = await fetch(`${REACT_APP_API_URL}/api/v1/events/addEvent`, {
+        const response = await fetch(`${REACT_APP_API_URL}/api/v1/users/adduser`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
+
             },
-            body: JSON.stringify(data)
+            body: data
         });
 
-        if(!response.ok){
-            throw new Error('Network response was not ok');
-        }
+        // if(!response.ok){
+        //     throw new Error('Network response was not ok');
+        // }
 
         console.log('Data from Spring Boot:', response.json());
     } catch (error) {
@@ -57,4 +59,4 @@ const sendData = async () => {
 };
 
 // Call the function
-sendData();
+// sendData();
