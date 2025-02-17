@@ -92,7 +92,7 @@ return (
         </div>
         {showFeedbackForm && (
           <Modal onClose={() => setShowFeedbackForm(false)}>
-            <FeedbackForm eventId={selectedEventId} />
+            <FeedbackForm eventId={selectedEventId} email={profileData.email}/>
           </Modal>
         )}
         {success && <Modal message={success} onClose={handleCloseModal} />}

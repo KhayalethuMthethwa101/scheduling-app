@@ -5,8 +5,7 @@ import { useUser } from '../context/UserContext';
 
 const REST_API_URL = 'http://localhost:8081/api/v1';
 
-const FeedbackForm = ({ eventId }) => {
-  const { profileData } = useUser();
+const FeedbackForm = ({ eventId, email }) => {
   const [comment, setComment] = useState('');
   const [rating, setRating] = useState(0);
   const [recommendation, setRecommendation] = useState(0);
@@ -21,7 +20,7 @@ const FeedbackForm = ({ eventId }) => {
       comment,
       rating,
       recommendation,
-      email: profileData.email
+      email
     };
 
     try {

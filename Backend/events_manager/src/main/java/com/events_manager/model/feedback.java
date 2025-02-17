@@ -2,8 +2,8 @@ package com.events_manager.model;
 
 public class feedback {
     private String feedbackId;
-    private String eventID;
-    private String visitorID;
+    private String eventId;
+    private String email;
     public int rating;
     public int recommendation;
     public String comment;
@@ -11,10 +11,10 @@ public class feedback {
     public feedback() {
     }
 
-    public feedback(String feedbackId, String eventID, String visitorID, int rating, int recommendation, String comment) {
+    public feedback(String feedbackId, String eventId, String email, int rating, int recommendation, String comment) {
         this.feedbackId = feedbackId;
-        this.eventID = eventID;
-        this.visitorID = visitorID;
+        this.eventId = eventId;
+        this.email = email;
         this.rating = rating;
         this.recommendation = recommendation;
         this.comment = comment;
@@ -29,19 +29,19 @@ public class feedback {
     }
 
     public String getEventID() {
-        return eventID;
+        return eventId;
     }
 
-    public void setEventID(String eventID) {
-        this.eventID = eventID;
+    public void setEventID(String eventId) {
+        this.eventId = eventId;
     }
 
     public String getVisitorID() {
-        return visitorID;
+        return email;
     }
 
-    public void setVisitorID(String visitorID) {
-        this.visitorID = visitorID;
+    public void setVisitorID(String email) {
+        this.email = email;
     }
 
     public int getRating() {
