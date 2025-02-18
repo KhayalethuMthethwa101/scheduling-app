@@ -14,5 +14,6 @@ FROM openjdk:23-jdk-slim
 WORKDIR /app
 COPY --from=build /app/target/events_manager-0.0.1-SNAPSHOT.jar .
 COPY src/main/resources/firebase-service-key.json /app/firebase-service-key.json
+ENV CLASSPATH=/app/firebase-service-key.json
 EXPOSE 8080
 ENTRYPOINT [ "java", "-jar", "events_manager-0.0.1-SNAPSHOT.jar" ]
