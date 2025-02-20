@@ -5,29 +5,27 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import java.util.Objects;
-import java.io.File;
-import java.io.FileInputStream;
+import org.springframework.core.io.ClassPathResource;
+
 import java.io.IOException;
+import java.io.InputStream;
 
 @SpringBootApplication(scanBasePackages = "com.events_manager")
-public class EventsManagerApplication{
+public class EventsManagerApplication {
 
-	public static void main(String[] args) throws IOException {
-		ClassLoader classLoader = EventsManagerApplication.class.getClassLoader();
+    public static void main(String[] args) throws IOException {
+        // Load Firebase config from resources inside the JAR
+        InputStream serviceAccount = new ClassPathResource("firebase-service-key.json").getInputStream();
 
-		File file = new File(Objects.requireNonNull(classLoader.getResource("firebase-service-key.json")).getFile());
-		FileInputStream serviceAccount = new FileInputStream(file.getAbsolutePath());
+        FirebaseOptions options = FirebaseOptions.builder()
+                .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .build();
 
-		FirebaseOptions options = new FirebaseOptions.Builder()
-				.setCredentials(GoogleCredentials.fromStream(serviceAccount))
-				.build();
+        if (FirebaseApp.getApps().isEmpty()) { // Ensure Firebase is initialized only once
+            FirebaseApp.initializeApp(options);
+        }
 
-		if (FirebaseApp.getApps().isEmpty()) { // Ensure Firebase is initialized only once
-			FirebaseApp.initializeApp(options);
-		}
-
-		SpringApplication.run(EventsManagerApplication.class, args);
-	}
+        SpringApplication.run(EventsManagerApplication.class, args);
+    }
 }
 
