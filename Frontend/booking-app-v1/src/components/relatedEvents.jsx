@@ -10,7 +10,7 @@ const relatedEvents = ({category, eventId}) => {
 
     useEffect(()=>{
         if(events.length > 0 && category){
-            const eventsData = events.filter((event)=> event.category === category && event._id !== eventId)
+            const eventsData = events.filter((event)=> event.category === category && event.eventId !== eventId)
             setRelEvent(eventsData)
         }
     },[events, category, eventId])
