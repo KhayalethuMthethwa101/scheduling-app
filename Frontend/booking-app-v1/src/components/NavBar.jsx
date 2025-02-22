@@ -16,7 +16,7 @@ const NavBar = () => {
     };
 
   return (
-    <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400'>
+    <div className='flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400 px-4 sm:px-6 md:px-8'>
         <img onClick={()=>navigate('/')} className='w-44 cursor-pointer' src={assets.logo} alt="" />
         <ul className='hidden md:flex item-start gap-5 font-medium'>
             <NavLink to='/'>
@@ -48,12 +48,14 @@ const NavBar = () => {
                                 <p onClick={()=>navigate('myprofile')} className='hover:text-black cursor-pointer'>My Profile</p>
                                 <p onClick={()=>navigate('mybookings')} className='hover:text-black cursor-pointer'>My Bookings</p>
                                 {profileData.role === 'Admin' && (<p onClick={()=>navigate('dashboard')} className='hover:text-black cursor-pointer'>Admin Dashboard</p>)}
+                                {profileData.role === 'Admin' && (<p onClick={()=>navigate('allbookings')} className='hover:text-black cursor-pointer'>All Bookings</p>)}
+                                {profileData.role === 'Admin' && (<p onClick={()=>navigate('allusers')} className='hover:text-black cursor-pointer'>All Users</p>)}
                                 <p onClick={handleLogout} className='hover:text-black cursor-pointer'>Logout</p>
                             </div>
                         </div>
                     </div>
-                    )
-                :(<button onClick={()=>navigate('/login')} className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block'>Login/SignUp</button>)
+                )
+                : (<button onClick={()=>navigate('/login')} className='bg-primary text-white px-8 py-3 rounded-full font-light hidden md:block'>Login/SignUp</button>)
             }
             <img onClick={()=>setShowMenu(true)} className='w-10 md:hidden' src={assets.menu_icon} />
             {/* Mobile menu */}

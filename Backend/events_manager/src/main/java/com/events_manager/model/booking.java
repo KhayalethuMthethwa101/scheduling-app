@@ -8,16 +8,37 @@ public class booking {
     private String bookingId;
     private String email;
     private String eventId;
+    private String eventName;
+    private String timestamp;
     public String bookingDate;
 
-    public booking(String bookingId, String email, String eventId, String bookingDate) {
+
+    public booking(String bookingId, String email, String eventId, String eventName, String timestamp, String bookingDate) {
         this.bookingId = bookingId;
         this.email = email;
         this.eventId = eventId;
+        this.eventName = eventName;
+        this.timestamp = timestamp;
         this.bookingDate = bookingDate;
     }
 
     public booking() {
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getEventName() {
+        return eventName;
+    }
+
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
     }
 
     public String getBookingId() {

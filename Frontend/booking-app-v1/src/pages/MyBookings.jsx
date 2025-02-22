@@ -16,7 +16,7 @@ const MyBookings = () => {
   const [success, setSuccess] = useState(null);
   const [showFeedbackForm, setShowFeedbackForm] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
-  const navigate = useNavigate()
+  
 
 
   useEffect(() => {
@@ -59,7 +59,6 @@ const MyBookings = () => {
     setError(null);
   }
 
-
 return (
     <div>
         <p className='pb-3 mt-12 font-medium text-zinc-700 border-b'>My Appointments</p>
@@ -81,7 +80,7 @@ return (
                 </div>
                 <div></div>
                 <div className='flex flex-col gap-2 justify-end'>
-                  <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-blue-600 hover:text-white transition-all duration-300' onClick={() => handleFeedback(booking.eventId)}>Give Feedback</button>
+                <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-blue-600 hover:text-white transition-all duration-300' onClick={() => handleFeedback(booking.eventId)}>Give Feedback</button>
                   <button className='text-sm text-stone-500 text-center sm:min-w-48 py-2 border rounded hover:bg-red-600 hover:text-white transition-all duration-300' onClick={() => handleCancel(booking.bookingId)}>Cancel Appointment</button>
                 </div>
               </div>

@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
-import { useUser } from '../context/UserContext';
 
 
 const FeedbackForm = ({ eventId, email }) => {
@@ -15,11 +14,11 @@ const FeedbackForm = ({ eventId, email }) => {
     e.preventDefault();
     const feedbackData = {
       feedbackId: uuidv4(),
-      eventId,
+      eventId: eventId,
       comment,
       rating,
       recommendation,
-      email
+      email: email
     };
 
     try {

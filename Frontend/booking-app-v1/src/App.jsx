@@ -12,6 +12,8 @@ import NavBar from './components/NavBar'
 import Footer from './components/Footer'
 import CreateEvent from './pages/CreateEvent'
 import Dashboard from './pages/Dashboard'
+import AllBookings from './pages/AllBookings'
+import AllUsers from './pages/AllUsers'
 
 const App = () => {
   return (
@@ -29,6 +31,8 @@ const App = () => {
         <Route path='/mybookings' element={<MyBookings />} />
         <Route path='/booking/:eventId' element={<EventInfo />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/allbookings" element={<AllBookings />} />
+        <Route path="/allusers" element={<AllUsers />} />
       </Routes>
       <Footer />
     </div>

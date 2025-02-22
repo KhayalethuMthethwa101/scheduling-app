@@ -54,15 +54,15 @@ public class eventService {
     }
 
     public String uploadImage(MultipartFile file) throws Exception {
-        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
-        BlobId blobId = BlobId.of(BUCKET_NAME, "events/" + fileName);
+        String fileName = "events/" + UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        BlobId blobId = BlobId.of(BUCKET_NAME, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
 
         try (InputStream inputStream = file.getInputStream()) {
             storage.create(blobInfo, inputStream);
         }
 
-        // Generate a public download URL
-        return String.format("https://firebasestorage.googleapis.com", BUCKET_NAME, "events/" + fileName);
+        // Generate the public URL for the uploaded image
+        return String.format("https://storage.googleapis.com/%s/%s", BUCKET_NAME, fileName);
     }
 }

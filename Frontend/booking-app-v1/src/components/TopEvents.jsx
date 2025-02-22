@@ -16,7 +16,7 @@ const TopEvents = () => {
             <h1 className='text-3xl font-medium'>Top Events To Choose from</h1>
             <p className='sm:w-1/3 text-center text-sm'>Simply Browse through the extensive list of Best rated events</p>
             <div className='w-full grid grid-cols-auto gap-4 pt-5 gap-y-6 px-3 sm:px-0'>
-                {events.slice(0,10).map((item, index)=>(
+                {events.slice(0,5).map((item, index)=>(
                     <div onClick={()=>{navigate(`/booking/${item.eventId}`); scrollTo(0,0)}} className='border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
                     <img className='w-full h-48 object-cover bg-blue-50' src={item.image} alt="" /> 
                     <div className='p-4'>

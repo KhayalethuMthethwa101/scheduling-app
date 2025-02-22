@@ -37,16 +37,18 @@ const EventInfo = () => {
     }
 
     try {
+      console.log(eventInfo);
       const bookingData = {
         bookingId: uuidv4(),
         email: profileData.email,
         eventId: eventInfo.eventId,
+        eventName: eventInfo.eventName,
         bookingDate: new Date().toISOString().split('T')[0], // Format as YYYY-MM-DD
+        timestamp: new Date().toISOString(),
       };
 
       await axios.post(`${import.meta.env.VITE_APP_API_URL}/bookings`, bookingData);
       setSuccess('RSVP successful!');
-      navigate('/events')
       setError(null);
     } catch (error) {
       setError('RSVP failed. Please try again.');
@@ -58,6 +60,7 @@ const EventInfo = () => {
   const handleCloseModal = () => {
     setSuccess(null);
     setError(null);
+    navigate("/events")
   };
 
   return eventInfo && (
@@ -102,8 +105,16 @@ const EventInfo = () => {
         <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'> 
           {/* RSVP Section */}
           <button onClick={handleRsvp} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>RSVP</button>
-          {error && <Modal message={error} onClose={handleCloseModal} />}
-          {success && <Modal message={success} onClose={handleCloseModal} />}
+          { error && 
+              <Modal onClose={handleCloseModal}>
+                <p className="text-red-600">{error}</p>
+              </Modal>
+          }
+          { success && 
+              <Modal onClose={handleCloseModal}>
+                <p className="text-green-600">{success}</p>  
+              </Modal>
+            }
         </div>
 
         {/* listing related events */}

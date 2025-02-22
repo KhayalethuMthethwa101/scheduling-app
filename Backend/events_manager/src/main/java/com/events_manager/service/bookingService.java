@@ -71,7 +71,13 @@ public class bookingService {
                     .entrySet().stream()
                     .map(entry -> {
                         Map<String, Object> map = new HashMap<>();
-                        map.put("eventId", entry.getKey());
+                        String eventId = entry.getKey();
+                        map.put("eventId", eventId);
+                        try {
+                            map.put("eventName", firestore.collection("events").document(eventId).get().get().getString("eventName")); // Update this line
+                        } catch (InterruptedException | ExecutionException e) {
+                            throw new RuntimeException(e);
+                        }
                         map.put("bookingCount", entry.getValue());
                         return map;
                     })
