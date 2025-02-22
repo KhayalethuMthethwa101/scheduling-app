@@ -1,24 +1,24 @@
 package com.events_manager.service;
-import com.google.api.client.util.Value;
+
 import com.google.api.core.ApiFuture;
 import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.cloud.storage.*;
+import com.events_manager.model.event;
 import org.springframework.stereotype.Service;
-import com.events_manager.model.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @Service
 public class eventService {
     Firestore firestore = FirestoreClient.getFirestore();
+    private final Storage storage = StorageOptions.getDefaultInstance().getService();
+    private static final String BUCKET_NAME = "voting-app-b302c.appspot.com";
 
     public event createEvent(event event) throws ExecutionException, InterruptedException {
         WriteResult result = firestore.collection("events").document(event.getEventId()).set(event).get();
@@ -53,20 +53,16 @@ public class eventService {
         return eventList;
     }
 
-    @Value("${upload.path}")
-    private String uploadPath = "../assests";
+    public String uploadImage(MultipartFile file) throws Exception {
+        String fileName = UUID.randomUUID().toString() + "_" + file.getOriginalFilename();
+        BlobId blobId = BlobId.of(BUCKET_NAME, "events/" + fileName);
+        BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
 
-    public String uploadImage(MultipartFile file) throws IOException {
-        String fileName = file.getOriginalFilename();
-        Path path = Paths.get(uploadPath + File.separator + fileName);
-
-        // Ensure directory exists
-        File directory = new File(uploadPath);
-        if (!directory.exists()) {
-            directory.mkdirs();
+        try (InputStream inputStream = file.getInputStream()) {
+            storage.create(blobInfo, inputStream);
         }
 
-            Files.write(path, file.getBytes());
-        return "/images/" + fileName;
+        // Generate a public download URL
+        return String.format("https://firebasestorage.googleapis.com", BUCKET_NAME, "events/" + fileName);
     }
 }
