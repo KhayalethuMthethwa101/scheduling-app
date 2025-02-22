@@ -6,7 +6,6 @@ import com.events_manager.service.eventService;
 import com.events_manager.model.event;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -17,35 +16,46 @@ public class eventController {
 
     @Autowired
     public eventController(eventService eventService) {
-        this.eventService=eventService;
+        this.eventService = eventService;
     }
 
+    // Get all events
     @GetMapping
-    public List<event> getAllEvents() throws ExecutionException, InterruptedException {
-        return eventService.getAllEvents();
+    public ResponseEntity<List<event>> getAllEvents() throws ExecutionException, InterruptedException {
+        List<event> events = eventService.getAllEvents();
+        return ResponseEntity.ok(events);
     }
 
-    @PostMapping("/addEvent")
-    public void createEvent(@RequestBody event event) throws ExecutionException, InterruptedException {
-        eventService.createEvent(event);
+    // Get an event by ID
+    @GetMapping("/{eventId}")
+    public ResponseEntity<event> getEventById(@PathVariable String eventId) throws ExecutionException, InterruptedException {
+        event event = eventService.getEvent(eventId);
+        return event != null ? ResponseEntity.ok(event) : ResponseEntity.notFound().build();
     }
 
-    @GetMapping("{eventId}")
-    public event getEventById(@PathVariable String eventId) throws ExecutionException, InterruptedException {
-        return eventService.getEvent(eventId);
-    }
-
+    // Delete an event
     @DeleteMapping("/{id}")
-    public String deleteEvent(@PathVariable String id) throws ExecutionException, InterruptedException {
-        return eventService.deleteEvent(id);
+    public ResponseEntity<String> deleteEvent(@PathVariable String id) throws ExecutionException, InterruptedException {
+        String result = eventService.deleteEvent(id);
+        return ResponseEntity.ok("Event deleted successfully at: " + result);
     }
 
+    // Create an event (text data only, no image)
+    @PostMapping("/addEvent")
+    public ResponseEntity<event> createEvent(@RequestBody event event) throws ExecutionException, InterruptedException {
+        event createdEvent = eventService.createEvent(event);
+        return ResponseEntity.ok(createdEvent);
+    }
+
+    // Create an event with an image
     @PostMapping("/create")
-    public event createEvent(@RequestPart("event") event event, @RequestPart("file") MultipartFile file) throws IOException, ExecutionException, InterruptedException {
+    public ResponseEntity<event> createEventWithImage(
+            @RequestPart("event") event event,
+            @RequestPart("file") MultipartFile file
+    ) throws Exception {
         String imageUrl = eventService.uploadImage(file);
         event.setImageUrl(imageUrl);
-        return eventService.createEvent(event);
+        event createdEvent = eventService.createEvent(event);
+        return ResponseEntity.ok(createdEvent);
     }
-
-
 }
