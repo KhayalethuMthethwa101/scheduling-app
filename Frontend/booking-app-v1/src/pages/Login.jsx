@@ -61,7 +61,6 @@ const Login = () => {
         console.log(setProfileData)
         setSuccess('Login successful!');
         setIsLoggedIn(true)
-        navigate('/')
     } catch (error) {
         setError('Login failed. Please check your email and password.'); 
         console.error('Error signing in:', error);
@@ -77,6 +76,7 @@ const Login = () => {
   };
 
   const handleCloseModal = () => {
+    navigate('/')
     setSuccess(null);
     setError(null);
   };
@@ -168,16 +168,24 @@ const Login = () => {
             required
           />
         </div>
-        {error && <p className='text-red-500'>{error}</p>}
-        {success && <p className='text-green-500'>{success}</p>}
+        {/* {error && <p className='text-red-500'>{error}</p>}
+        {success && <p className='text-green-500'>{success}</p>} */}
         <button className='bg-primary text-white w-full py-2 rounded-md text-base'>{state === 'Sign Up' ? "Create Account" : "Log in"}</button>
         {state === "Sign Up"
           ? <p>Already have an account? <span onClick={() => setState("Login")} className='text-primary underline cursor-pointer'>Login here</span></p>
           : <p>Create a new account? <span onClick={() => setState("Sign Up")} className='text-primary underline cursor-pointer'>Click here</span></p>
         }
       </div>
-      {success && <Modal message={success} onClose={handleCloseModal} />}
-      {error && <Modal message={error} onClose={handleCloseModal} />}
+      {success && 
+        <Modal onClose={handleCloseModal}>
+            <p className="text-green-600">{success}</p>
+        </Modal>
+      }
+      {error && 
+        <Modal message={error} onClose={handleCloseModal}>
+          <p className="text-red-600">{error}</p>
+        </Modal>
+      }
     </form>
   );
 }

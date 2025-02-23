@@ -14,13 +14,13 @@ const FeedbackForm = ({ eventId, email }) => {
     e.preventDefault();
     const feedbackData = {
       feedbackId: uuidv4(),
-      eventId: eventId,
+      eventId,
       comment,
       rating,
       recommendation,
-      email: email
+      email
     };
-
+    console.log(feedbackData)
     try {
       await axios.post(`${import.meta.env.VITE_APP_API_URL}/feedback`, feedbackData);
       setSuccess('Feedback submitted successfully!');

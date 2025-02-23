@@ -8,10 +8,10 @@ const NavBar = () => {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false)
     const { isLoggedIn, setIsLoggedIn } = useUser();
-    const { profileData } = useUser();
+    const { profileData, setProfileData } = useUser();
 
     const handleLogout = () => {
-        setIsLoggedIn(false); // Update login state
+        setProfileData(null); // Update login state
         navigate('/login'); // Redirect to login page
     };
 
@@ -38,7 +38,7 @@ const NavBar = () => {
         </ul>
         <div className='flex items-center'>
             {
-                isLoggedIn 
+                profileData 
                 ? (
                     <div className='flex items-center gap-2 cursor-pointer group relative'>
                         <img className='w-12 rounded-full' src={assets.profile_pic} alt="" />

@@ -18,6 +18,7 @@ const EventInfo = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const { profileData } = useUser();
+  const [reviews, setReviews] = useState([]);
   const navigate = useNavigate()
 
   const fetchEvent = async () => {
@@ -27,7 +28,8 @@ const EventInfo = () => {
 
 
   useEffect(()=>{
-    fetchEvent()
+    fetchEvent();
+    fetchReviews();
   }, [events, eventId])
 
   const handleRsvp = async () => {
@@ -37,7 +39,6 @@ const EventInfo = () => {
     }
 
     try {
-      console.log(eventInfo);
       const bookingData = {
         bookingId: uuidv4(),
         email: profileData.email,
@@ -63,12 +64,21 @@ const EventInfo = () => {
     navigate("/events")
   };
 
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/feedback/event/${eventId}`);
+      setReviews(response.data);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+    }
+  };
+
   return eventInfo && (
     <div>
         {/* ----------Event Details ----------- */}
         <div className='flex flex-col sm:flex-row gap-4'>
           <div>
-            <img className='bg-primary w-full sm:max-w-72 rounded-lg' src={eventInfo.image} alt="" />
+            <img className='bg-primary w-full sm:max-w-72 rounded-lg' src={eventInfo.imageUrl} alt="" />
           </div>
           <div className='flex-1 border border-gray-400 rounded-lg p-8 py-7 bg-white mx-2 sm:mx-0 mt-[-80px] sm:mt-0'>
             {/* -------------Event Info: Event name, Location, Date -------- */}
@@ -116,6 +126,53 @@ const EventInfo = () => {
               </Modal>
             }
         </div>
+        
+        {/* Review Section */}
+        <div className="mt-8">
+          <h2 className="text-xl font-semibold text-gray-900">Reviews</h2>
+          
+          {/* Review Summary */}
+          <div className="mt-8 p-4 bg-gray-100 rounded-lg">
+            {reviews.length > 0 ? (
+              <>
+                <h2 className="text-2xl font-bold text-gray-900">Customer Reviews</h2>
+                <div className="flex items-center gap-6 mt-3">
+                  {/* Average Rating */}
+                  <div className="flex flex-col items-center">
+                    <p className="text-4xl font-bold text-yellow-500">
+                      {reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length || 0} ⭐
+                    </p>
+                    <p className="text-sm text-gray-600">Average Rating</p>
+                  </div>
+
+                  {/* Recommendation Percentage */}
+                  <div className="flex flex-col items-center">
+                    <p className="text-4xl font-bold text-green-500">
+                    {reviews.reduce((sum, review) => sum + review.recommendation, 0) / reviews.length || 0} ⭐
+                    </p>
+                    <p className="text-sm text-gray-600">Would Recommend</p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <p className="text-gray-500 text-lg">No reviews yet. Be the first to leave one!</p>
+            )}
+          </div>
+
+          {/* Display Reviews */}
+          <div className="mt-4">
+            {reviews.map(review => (
+              <div key={review.reviewId} className="border-b py-3">
+                <p className="text-sm font-medium text-gray-800">{review.email}</p>
+                <p className="text-sm text-gray-600">Rating: {review.rating} ⭐</p>
+                <p className="text-sm text-gray-600">Recommendation: {review.recommendation}</p>
+                <p className="text-sm text-gray-700">{review.comment}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+
 
         {/* listing related events */}
         <RelatedEvents eventId={eventId} category={eventInfo.category} />

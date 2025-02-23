@@ -8,9 +8,6 @@ public class feedback {
     public int recommendation;
     public String comment;
 
-    public feedback() {
-    }
-
     public feedback(String feedbackId, String eventId, String email, int rating, int recommendation, String comment) {
         this.feedbackId = feedbackId;
         this.eventId = eventId;
@@ -20,6 +17,8 @@ public class feedback {
         this.comment = comment;
     }
 
+    public feedback(){}
+
     public String getFeedbackId() {
         return feedbackId;
     }
@@ -28,19 +27,19 @@ public class feedback {
         this.feedbackId = feedbackId;
     }
 
-    public String getEventID() {
+    public String getEventId() {
         return eventId;
     }
 
-    public void setEventID(String eventId) {
+    public void setEventId(String eventId) {
         this.eventId = eventId;
     }
 
-    public String getVisitorID() {
+    public String getEmail() {
         return email;
     }
 
-    public void setVisitorID(String email) {
+    public void setEmail(String email) {
         this.email = email;
     }
 
