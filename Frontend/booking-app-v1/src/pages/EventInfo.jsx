@@ -10,7 +10,9 @@ import { useNavigate } from 'react-router-dom'
 import Modal from '../components/modal';
 import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
+
 const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+const WEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
 
 const mapContainerStyle = {
   width: "100%",
@@ -30,6 +32,7 @@ const EventInfo = () => {
   const [reviews, setReviews] = useState([]);
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [weatherError, setWeatherError] = useState(null);
   const navigate = useNavigate()
 
   const fetchEvent = async () => {
@@ -37,34 +40,36 @@ const EventInfo = () => {
     setEventInfo(eventInfo)   
   }
 
-  const fetchWeather = async () => {
-    try {
-      const apiKey = `${import.meta.env.VITE_OPENWEATHER_API_KEY}`;  // Replace with your actual API key
-      let lat = parseFloat(eventInfo.latitude);
-      let long = parseFloat(eventInfo.longitude);
-      console.log(lat + ' ' + long)
-      if(!lat || !long){
-        lat=-33.9545,
-        long=18.4563
-      }
-      const response = await fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`
-      );
-      // https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric
-      const data = await response.json();
-      setWeather(data);
-      setLoading(false);
-    } catch (err) {
-      setError("Failed to fetch weather data");
-      setLoading(false);
-    }
-  };
-
   useEffect(()=>{
     fetchEvent();
-    fetchWeather();
     fetchReviews();
   }, [events, eventId])
+
+  useEffect(() => {
+    if (!eventInfo) return;
+
+    const fetchWeather = async () => {
+      try {
+        const lat = parseFloat(eventInfo?.latitude) //|| -33.9249; // Default: Cape Town
+        const lon = parseFloat(eventInfo?.longitude) //|| 18.4241; // Default: Cape Town
+        console.log(`Fetching weather for lat: ${lat}, lon: ${lon}`);
+
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
+        );
+        const data = await response.json();
+
+        if (data.cod !== 200) throw new Error(data.message);
+        setWeather(data);
+      } catch (err) {
+        setWeatherError('Failed to fetch weather data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchWeather();
+  }, [eventInfo])
 
   const handleRsvp = async () => {
     if (!profileData || !profileData.email) {
@@ -92,9 +97,24 @@ const EventInfo = () => {
     }
   }
 
+  const handleDeleteEvent = async () => {
+    if (!window.confirm("Are you sure you want to delete this event?")) return;
+  
+    try {
+      await axios.delete(`${import.meta.env.VITE_APP_API_URL}/events/${eventInfo.eventId}`);
+      setSuccess('Event deleted successfully!');
+      setError(null);
+      navigate("/events"); // Redirect after deletion
+    } catch (error) {
+      setError('Failed to delete event. Please try again.');
+      console.error('Error deleting event:', error);
+    }
+  };
+
   const handleCloseModal = () => {
     setSuccess(null);
     setError(null);
+    setWeather(null);
     navigate("/events")
   };
 
@@ -114,17 +134,17 @@ const EventInfo = () => {
       <div className="bg-white p-4 rounded-lg shadow-md my-4">
         {loading ? (
           <p>Loading weather...</p>
-        ) : weather ? (
-          <div>
-            <h3 className="text-xl font-semibold">
-              Weather Forecast for {eventInfo?.location?.split(",")[2]?.trim()}
-            </h3>
-            <p>Temperature: {weather?.main?.temp}°C</p>
-            <p>Conditions: {weather?.weather?.[0]?.description}</p>
-            <p>Wind Speed: {weather?.wind?.speed} m/s</p>
-          </div>
+        ) : weatherError ? (
+          <p>{weatherError}</p>
         ) : (
-          <p className="text-red-500">Weather data unavailable</p>
+          weather && (
+            <div>
+              <h3 className="text-xl font-semibold">Weather Forecast for {eventInfo.location}</h3>
+              <p>Temperature: {weather.main.temp}°C</p>
+              <p>Conditions: {weather.weather[0].description}</p>
+              <p>Wind Speed: {weather.wind.speed} m/s</p>
+            </div>
+          )
         )}
       </div>
         {/* ----------Event Details ----------- */}
@@ -173,6 +193,15 @@ const EventInfo = () => {
         <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'> 
           {/* RSVP Section */}
           <button onClick={handleRsvp} className='bg-primary text-white text-sm font-light px-20 py-3 rounded-full my-6'>RSVP</button>
+          {/* Only show delete button if user is an admin */}
+          {profileData?.role === "Admin" && (
+            <button 
+              onClick={handleDeleteEvent} 
+              className='bg-red-600 text-white text-sm font-light px-20 py-3 rounded-full ml-4'
+            >
+              Delete Event
+            </button>
+          )}
           { error && 
               <Modal onClose={handleCloseModal}>
                 <p className="text-red-600">{error}</p>
