@@ -8,7 +8,16 @@ import { useUser } from '../context/UserContext';
 import { v4 as uuidv4 } from 'uuid';
 import { useNavigate } from 'react-router-dom'
 import Modal from '../components/modal';
+import { GoogleMap, LoadScript, Marker } from "@react-google-maps/api";
 
+const GOOGLE_MAPS_API_KEY = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
+
+const mapContainerStyle = {
+  width: "100%",
+  height: "400px",
+  borderRadius: "10px",
+  marginTop: "20px",
+};
 
 const EventInfo = () => {
 
@@ -19,6 +28,8 @@ const EventInfo = () => {
   const [success, setSuccess] = useState(null);
   const { profileData } = useUser();
   const [reviews, setReviews] = useState([]);
+  const [weather, setWeather] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate()
 
   const fetchEvent = async () => {
@@ -26,9 +37,32 @@ const EventInfo = () => {
     setEventInfo(eventInfo)   
   }
 
+  const fetchWeather = async () => {
+    try {
+      const apiKey = `${import.meta.env.VITE_OPENWEATHER_API_KEY}`;  // Replace with your actual API key
+      let lat = parseFloat(eventInfo.latitude);
+      let long = parseFloat(eventInfo.longitude);
+      console.log(lat + ' ' + long)
+      if(!lat || !long){
+        lat=-33.9545,
+        long=18.4563
+      }
+      const response = await fetch(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${apiKey}&units=metric`
+      );
+      // https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric
+      const data = await response.json();
+      setWeather(data);
+      setLoading(false);
+    } catch (err) {
+      setError("Failed to fetch weather data");
+      setLoading(false);
+    }
+  };
 
   useEffect(()=>{
     fetchEvent();
+    fetchWeather();
     fetchReviews();
   }, [events, eventId])
 
@@ -73,8 +107,26 @@ const EventInfo = () => {
     }
   };
 
+
   return eventInfo && (
     <div>
+      {/* ----------Weather Info Section ----------- */}
+      <div className="bg-white p-4 rounded-lg shadow-md my-4">
+        {loading ? (
+          <p>Loading weather...</p>
+        ) : weather ? (
+          <div>
+            <h3 className="text-xl font-semibold">
+              Weather Forecast for {eventInfo?.location?.split(",")[2]?.trim()}
+            </h3>
+            <p>Temperature: {weather?.main?.temp}°C</p>
+            <p>Conditions: {weather?.weather?.[0]?.description}</p>
+            <p>Wind Speed: {weather?.wind?.speed} m/s</p>
+          </div>
+        ) : (
+          <p className="text-red-500">Weather data unavailable</p>
+        )}
+      </div>
         {/* ----------Event Details ----------- */}
         <div className='flex flex-col sm:flex-row gap-4'>
           <div>
@@ -96,6 +148,12 @@ const EventInfo = () => {
                 Description <img className='w-3' src={assets.info_icon} alt="" />
               </p>
               <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{eventInfo.eventDescription}</p>
+            </div>
+            <div>
+              <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>
+                Address
+              </p>
+              <p className='text-sm text-gray-500 max-w-[700px] mt-1'>{eventInfo.location}</p>
             </div>
             <div>
               <p className='flex items-center gap-1 text-sm font-medium text-gray-900 mt-3'>Date</p>
@@ -126,6 +184,25 @@ const EventInfo = () => {
               </Modal>
             }
         </div>
+
+        {/* Google Map Section */}
+        {eventInfo.latitude && eventInfo.longitude && (
+          <div className="mt-8">
+            <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
+              <GoogleMap
+                mapContainerStyle={mapContainerStyle}
+                center={{ lat: parseFloat(eventInfo.latitude), lng: parseFloat(eventInfo.longitude) }}
+        
+                zoom={15}
+              >
+                <Marker 
+                  position={{ lat: parseFloat(eventInfo.latitude), lng: parseFloat(eventInfo.longitude) }}
+                 
+                />
+              </GoogleMap>
+            </LoadScript>
+          </div>
+        )}
         
         {/* Review Section */}
         <div className="mt-8">

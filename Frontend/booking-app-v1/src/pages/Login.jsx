@@ -5,7 +5,9 @@ import { auth } from '../services/firebase';
 import { useUser } from '../context/UserContext';
 import axios from 'axios';
 import Modal from '../components/modal';
-
+import { assets } from '../assets/assets';
+import { storage } from '../services/firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Login = () => {
 
@@ -22,11 +24,38 @@ const Login = () => {
   const { setIsLoggedIn, setProfileData } = useUser()
   const navigate = useNavigate()
 
+  const uploadDefaultProfilePic = async () => {
+    try {
+      const response = await fetch(assets.profile_pic);
+      const blob = await response.blob();
+      const storageRef = ref(storage, `profilePictures/${Date.now()}-default-profile.png`);
+      const uploadTask = uploadBytesResumable(storageRef, blob);
+      
+      return new Promise((resolve, reject) => {
+        uploadTask.on(
+          'state_changed',
+          null,
+          (error) => reject(error),
+          async () => {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            resolve(downloadURL);
+          }
+        );
+      });
+    } catch (error) {
+      console.error('Error uploading default profile picture:', error);
+      return null;
+    }
+  };
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+
+        const profilePicURL = await uploadDefaultProfilePic();
+
         const userProfile = {
           userName: name,
           email: user.email,
@@ -36,6 +65,7 @@ const Login = () => {
           gender,
           dob: dateOfBirth,
           role: 'user',
+          image: profilePicURL || assets.profile_pic,
         };
         // Create user in the Spring Boot backend
         await axios.post(`${import.meta.env.VITE_APP_API_URL}/users/adduser`, userProfile);
@@ -58,7 +88,6 @@ const Login = () => {
         const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/users/${user.email}`);
         const profileData = response.data;
         setProfileData(profileData);
-        console.log(setProfileData)
         setSuccess('Login successful!');
         setIsLoggedIn(true)
     } catch (error) {

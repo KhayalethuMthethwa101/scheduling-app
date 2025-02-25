@@ -8,6 +8,8 @@ public class event {
     public String eventName;
     public String eventDescription;
     public String location;
+    public String latitude;
+    public String longitude;
     public String status;
     public String dateOfEvent;
     public String timeOfEvent;
@@ -17,11 +19,13 @@ public class event {
     public String imageUrl;
 
 
-    public event(String eventId, String eventName, String eventDescription, String location, String status, String dateOfEvent, String timeOfEvent, String imageUrl,String category, int capacity, String fee) {
+    public event(String eventId, String eventName, String eventDescription, String location, String status, String latitude, String longitude, String dateOfEvent, String timeOfEvent, String imageUrl,String category, int capacity, String fee) {
         this.eventId = eventId;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
         this.location = location;
+        this.latitude = latitude;
+        this.longitude = longitude;
         this.status = status;
         this.dateOfEvent = dateOfEvent;
         this.timeOfEvent = timeOfEvent;
@@ -33,6 +37,22 @@ public class event {
 
     public event(){
 
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
     }
 
     public String getImageUrl() {

@@ -23,20 +23,17 @@ public class user {
         this.image = image;
         this.role = role;
     }
-    public user(String userName, String email, String password, String phoneNumber, String address, String gender, String DOB, String role) {
-        this.userName = userName;
-        this.email = email;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.address = address;
-        this.gender = gender;
-        this.DOB = DOB;
-        this.role = role;
-    }
 
     public user() {
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
 
     public String getAddress() {
         return address;

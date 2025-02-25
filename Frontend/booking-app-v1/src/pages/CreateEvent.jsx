@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { storage } from '../services/firebase';
-import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 
 const CreateEvent = () => {
@@ -12,6 +12,8 @@ const CreateEvent = () => {
     eventName: '',
     status: '',
     location: '',
+    longitute: '',
+    latitude: '',
     category: '',
     eventDescription: '',
     dateOfEvent: '',
@@ -23,6 +25,43 @@ const CreateEvent = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploading, setUploading] = useState(false);
   const navigate = useNavigate();
+  const autocompleteRef = useRef(null);
+
+  useEffect(() => {
+    loadGooglePlaces();
+  }, []);
+
+  const loadGooglePlaces = () => {
+    if (!window.google || !window.google.maps || !window.google.maps.places) {
+      const script = document.createElement("script");
+      script.src = `https://maps.googleapis.com/maps/api/js?key=${import.meta.env.VITE_GOOGLE_MAPS_API_KEY}&libraries=places`;
+      script.async = true;
+      script.defer = true;
+      script.onload = initAutocomplete;
+      document.body.appendChild(script);
+    } else {
+      initAutocomplete();
+    }
+  };
+
+  const initAutocomplete = () => {
+    if (!autocompleteRef.current) return;
+    const autocomplete = new window.google.maps.places.Autocomplete(autocompleteRef.current, {
+      types: ["geocode"], // Restrict results to addresses
+    });
+
+    autocomplete.addListener("place_changed", () => {
+      const place = autocomplete.getPlace();
+      if (place.geometry) {
+        setEventDetails((prevDetails) => ({
+          ...prevDetails,
+          location: place.formatted_address,
+          latitude: place.geometry.location.lat().toString(),
+          longitude: place.geometry.location.lng().toString(),
+        }));
+      }
+    });
+  };
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -86,8 +125,26 @@ const CreateEvent = () => {
       <h2 className='text-2xl font-semibold mb-4'>Create New Event</h2>
       <input type="text" name="eventName" placeholder="Event Name" onChange={handleInputChange} className='w-full mb-2 p-2 border rounded' />
       <input type="text" name="status" placeholder="Status" onChange={handleInputChange} className='w-full mb-2 p-2 border rounded' />
-      <input type="text" name="location" placeholder="Location" onChange={handleInputChange} className='w-full mb-2 p-2 border rounded' />
-      <input type="text" name="category" placeholder="Category" onChange={handleInputChange} className='w-full mb-2 p-2 border rounded' />
+
+      {/* Google Places Autocomplete */}
+      <input ref={autocompleteRef} type="text" name="location" placeholder="Enter Location" className='w-full mb-2 p-2 border rounded' />
+      {eventDetails.latitude && eventDetails.longitude && (
+        <p className="text-sm text-gray-500">Latitude: {eventDetails.latitude}, Longitude: {eventDetails.longitude}</p>
+      )}
+      <select 
+        name="category" 
+        onChange={handleInputChange} 
+        className='w-full mb-2 p-2 border rounded'
+        defaultValue="Other"
+      >
+        <option value="" disabled>Select Category</option>
+        <option value="Academic">Academic</option>
+        <option value="Art">Art</option>
+        <option value="Motorsport">Motorsport</option>
+        <option value="Music">Music</option>
+        <option value="Sport">Sport</option>
+        <option value="Other">Other</option>
+      </select>
       <textarea name="eventDescription" placeholder="Description" onChange={handleInputChange} className='w-full mb-2 p-2 border rounded'></textarea>
       <input type="date" name="dateOfEvent" onChange={handleInputChange} className='w-full mb-2 p-2 border rounded' />
       <input type="time" name="timeOfEvent" onChange={handleInputChange} className='w-full mb-2 p-2 border rounded' />
