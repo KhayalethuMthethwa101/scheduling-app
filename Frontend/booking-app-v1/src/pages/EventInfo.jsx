@@ -52,7 +52,6 @@ const EventInfo = () => {
       try {
         const lat = parseFloat(eventInfo?.latitude) //|| -33.9249; // Default: Cape Town
         const lon = parseFloat(eventInfo?.longitude) //|| 18.4241; // Default: Cape Town
-        console.log(`Fetching weather for lat: ${lat}, lon: ${lon}`);
 
         const response = await fetch(
           `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${WEATHER_API_KEY}&units=metric`
