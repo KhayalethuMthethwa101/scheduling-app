@@ -9,9 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 @Service
@@ -51,6 +49,37 @@ public class eventService {
             eventList.add(document.toObject(event.class));
         }
         return eventList;
+    }
+
+    public String updateEvent(String eventId, event updatedEvent) throws ExecutionException, InterruptedException {
+        Firestore dbFirestore = FirestoreClient.getFirestore();
+        DocumentReference documentReference = dbFirestore.collection("events").document(eventId);
+
+        // Fetch existing event
+        event existingEvent = documentReference.get().get().toObject(event.class);
+
+        if (existingEvent == null) {
+            return "Event not found!";
+        }
+
+        // Convert both existing and updated events to a Map
+        Map<String, Object> updatedFields = new HashMap<>();
+        updatedFields.put("eventName", updatedEvent.getEventName() != null ? updatedEvent.getEventName() : existingEvent.getEventName());
+        updatedFields.put("status", updatedEvent.getStatus() != null ? updatedEvent.getStatus() : existingEvent.getStatus());
+        updatedFields.put("eventDescription", updatedEvent.getEventDescription() != null ? updatedEvent.getEventDescription() : existingEvent.getEventDescription());
+        updatedFields.put("fee", updatedEvent.getFee() != null ? updatedEvent.getFee() : existingEvent.getFee());
+        updatedFields.put("dateOfEvent", updatedEvent.getDateOfEvent() != null ? updatedEvent.getDateOfEvent() : existingEvent.getDateOfEvent());
+        updatedFields.put("timeOfEvent", updatedEvent.getTimeOfEvent() != null ? updatedEvent.getTimeOfEvent() : existingEvent.getTimeOfEvent());
+        updatedFields.put("imageUrl", updatedEvent.getImageUrl() != null ? updatedEvent.getImageUrl() : existingEvent.getImageUrl());
+        updatedFields.put("location", updatedEvent.getLocation() != null ? updatedEvent.getLocation() : existingEvent.getLocation());
+        updatedFields.put("latitude", updatedEvent.getLatitude() != null ? updatedEvent.getLatitude() : existingEvent.getLatitude());
+        updatedFields.put("longitude", updatedEvent.getLongitude() != null ? updatedEvent.getLongitude() : existingEvent.getLongitude());
+        updatedFields.put("capacity", updatedEvent.getCapacity() != 0 ? updatedEvent.getCapacity() : existingEvent.getCapacity());
+
+        // Update only the changed fields
+        documentReference.update(updatedFields);
+
+        return "Event updated successfully!";
     }
 
     public String uploadImage(MultipartFile file) throws Exception {

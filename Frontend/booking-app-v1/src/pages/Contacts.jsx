@@ -15,7 +15,7 @@ const Contacts = () => {
           <p className='font-semibold text-lg text-gray-600'>OUR OFFICES</p>
           <p className='text-gray-500'>1234 Made Up Avenue,<br /> City on the Mountain</p>
           <p className='text-gray-500'>Mobile: (+27) 76 873 8389<br />Email: khayalethumthethwa16@gmail.com</p>
-          <p className='font-semibold text-lg text-gray-600'>Careers at EventMaster</p>
+          <p className='font-semibold text-lg text-gray-600'>Careers at Cape Town Art Festival</p>
           <p className='text-gray-500'>Learn More about our Job openings</p>
           <button className='border border-black px-8 py-4 text-sm hover:bg-black hover:text-white transition-all duration-500'>Explore Jobs</button>
         </div>
