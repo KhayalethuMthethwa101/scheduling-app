@@ -311,17 +311,17 @@ const EventInfo = () => {
           {profileData?.role === "Admin" && (
             <button 
               onClick={handleDeleteEvent} 
-              className='bg-red-600 text-white text-sm font-light px-20 py-3 rounded-full ml-4'
+              className='bg-red-600 text-white text-sm font-light px-20 py-3 rounded-full ml-1 my-6'
             >
-              Delete Event
+              Delete
             </button>
           )}
           {profileData?.role === "Admin" && (
             <button 
               onClick={() => setIsEditing(!isEditing)} 
-              className='bg-blue-500 text-white text-sm font-light px-20 py-3 rounded-full ml-4'
+              className='bg-blue-500 text-white text-sm font-light px-20 py-3 rounded-full ml-1 my-6'
             >
-              {isEditing ? "Cancel" : "Edit Event"}
+              {isEditing ? "Cancel" : "Edit"}
             </button>
           )}
           { error && 
@@ -368,7 +368,7 @@ const EventInfo = () => {
                   {/* Average Rating */}
                   <div className="flex flex-col items-center">
                     <p className="text-4xl font-bold text-yellow-500">
-                      {reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length || 0} ⭐
+                      {parseFloat((reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length).toFixed(2)) || 0} ⭐
                     </p>
                     <p className="text-sm text-gray-600">Average Rating</p>
                   </div>
@@ -376,7 +376,7 @@ const EventInfo = () => {
                   {/* Recommendation Percentage */}
                   <div className="flex flex-col items-center">
                     <p className="text-4xl font-bold text-green-500">
-                    {reviews.reduce((sum, review) => sum + review.recommendation, 0) / reviews.length || 0} ⭐
+                    {parseFloat((reviews.reduce((sum, review) => sum + review.recommendation, 0) / reviews.length).toFixed(2)) || 0} ⭐
                     </p>
                     <p className="text-sm text-gray-600">Would Recommend</p>
                   </div>

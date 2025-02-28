@@ -97,8 +97,8 @@ const UsersTable = () => {
                     onChange={(e) => handleChange(user.email, "userRole", e.target.value)}
                     className="border px-2 py-1 w-full"
                   >
-                    <option value="visitor">Visitor</option>
-                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                    <option value="Admin">Admin</option>
                   </select>
                 ) : (
                   user.userRole

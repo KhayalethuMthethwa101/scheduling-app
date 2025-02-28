@@ -110,8 +110,8 @@ public class bookingService {
         try {
             QuerySnapshot querySnapshot = firestore.collection("users").get().get();
             return querySnapshot.getDocuments().stream()
-                    .filter(doc -> doc.getString("dateOfBirth") != null) // Add null check
-                    .collect(Collectors.groupingBy(doc -> getAgeGroup(doc.getString("dateOfBirth")), Collectors.counting()))
+                    .filter(doc -> doc.getString("dob") != null) // Add null check
+                    .collect(Collectors.groupingBy(doc -> getAgeGroup(doc.getString("dob")), Collectors.counting()))
                     .entrySet().stream()
                     .map(entry -> {
                         Map<String, Object> map = new HashMap<>();

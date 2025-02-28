@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail} from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { useUser } from '../context/UserContext';
 import axios from 'axios';
@@ -51,6 +51,21 @@ const Login = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
+        // Validate Date of Birth
+        const today = new Date();
+        const dob = new Date(dateOfBirth);
+
+        if (dob > today) {
+            setError('Date of birth cannot be in the future');
+            return; // Stop execution
+        }
+        // Check if email is already registered in Firebase Authentication
+        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+        
+        if (signInMethods.length > 0) {
+            setError('User already exists');
+            return; // Stop execution if user already exists
+        }
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
 
@@ -73,11 +88,14 @@ const Login = () => {
         setSuccess('Account created successfully!');
         setError(null)
         setIsLoggedIn(true)
-        navigate('/')
     } catch (error) {
-        setError(error);
-        console.error('Error signing up:', error);
-    }
+      if (error.code === 'auth/email-already-in-use') {
+          setError('User already exists');
+      } else {
+          setError(error.message);
+          console.error('Error signing up:', error);
+      }
+  }
   }
 
   const handleSignIn = async (e) => {
@@ -105,7 +123,9 @@ const Login = () => {
   };
 
   const handleCloseModal = () => {
-    navigate('/')
+    if (!error) { 
+      navigate('/'); // Navigate only if there is no error
+    }
     setSuccess(null);
     setError(null);
   };
