@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import axios from 'axios';
-import { useUser } from '../context/UserContext';
 
 
 const FeedbackForm = ({ eventId, email }) => {
@@ -21,7 +20,7 @@ const FeedbackForm = ({ eventId, email }) => {
       recommendation,
       email
     };
-
+    console.log(feedbackData)
     try {
       await axios.post(`${import.meta.env.VITE_APP_API_URL}/feedback`, feedbackData);
       setSuccess('Feedback submitted successfully!');

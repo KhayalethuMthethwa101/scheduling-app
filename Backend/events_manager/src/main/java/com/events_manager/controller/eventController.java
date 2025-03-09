@@ -58,4 +58,9 @@ public class eventController {
         event createdEvent = eventService.createEvent(event);
         return ResponseEntity.ok(createdEvent);
     }
+
+    @PutMapping("/{eventId}")
+    public String updateEvent(@PathVariable String eventId, @RequestBody event updatedEvent) throws ExecutionException, InterruptedException {
+        return eventService.updateEvent(eventId, updatedEvent);
+    }
 }

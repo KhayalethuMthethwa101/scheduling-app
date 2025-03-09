@@ -11,11 +11,11 @@ const About = () => {
         <div className='my-10 flex flex-col md:flex-row gap-12'>
           <img className='w-full md:max-w-[360px]' src={assets.about_us} alt=""/>
           <div className='flex flex-col justify-center gap-6 md:w-2/4 text-sm text-gray-600'>
-            <p>Welcome to Events Booking Master, where we turn your event dreams into reality! With a passion for creativity and a commitment to excellence, we specialize in crafting unforgettable experiences that leave a lasting impression.</p>
+            <p>Welcome to Cape Town Art Festival, where we turn your event dreams into reality! With a passion for creativity and a commitment to excellence, we specialize in crafting unforgettable experiences that leave a lasting impression.</p>
             <b className='text-gray-800'>Our Objective</b>
             <p>Our primary objective is to deliver exceptional event planning and management services that exceed our clients' expectations. Whether it's a corporate gathering, a lavish wedding, or a themed party, we ensure every detail is meticulously planned and flawlessly executed. Our team of experienced professionals works closely with clients to understand their vision and transform it into a stunning reality.</p>
             <b className='text-gray-800'>Our Motivation</b>
-            <p>At Events Booking Master, we believe that every event tells a unique story. Our motivation stems from our love for creating memorable moments that bring joy and happiness to our clients and their guests. We take pride in our ability to design and execute events that are not only visually stunning but also seamlessly organized.</p>
+            <p>At Cape Town Art Festival, we believe that every event tells a unique story. Our motivation stems from our love for creating memorable moments that bring joy and happiness to our clients and their guests. We take pride in our ability to design and execute events that are not only visually stunning but also seamlessly organized.</p>
           </div>
         </div>
 

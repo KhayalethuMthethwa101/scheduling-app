@@ -7,13 +7,16 @@ export const AppContext = createContext()
 const AppContextProvider = (props) => {
 
     const [events, setEvents] = useState([]);
+    const [users, setUsers] = useState([]);
     const currencySymbol = 'R';
 
     useEffect(() => {
         const fetchEvents = async () => {
             try {
                 const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/events`);
+                const usersResponse = await axios.get(`${import.meta.env.VITE_APP_API_URL}/users`);
                 setEvents(response.data);
+                setUsers(usersResponse.data);
             } catch (error) {
                 console.error('Error fetching events:', error);
             }
@@ -23,7 +26,7 @@ const AppContextProvider = (props) => {
     }, []);
 
     const value = {
-        events, currencySymbol
+        events, currencySymbol, users
     }
 
     return(

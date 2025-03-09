@@ -29,8 +29,8 @@ public class feedbackService {
         return future.get().getUpdateTime().toString();
     }
 
-    public feedback getFeedback(String id) throws ExecutionException, InterruptedException {
-        DocumentReference docRef = firestore.collection("feedbacks").document(id);
+    public feedback getFeedback(String feedbackId) throws ExecutionException, InterruptedException {
+        DocumentReference docRef = firestore.collection("feedbacks").document(feedbackId);
         ApiFuture<DocumentSnapshot> future = docRef.get();
         DocumentSnapshot document = future.get();
 

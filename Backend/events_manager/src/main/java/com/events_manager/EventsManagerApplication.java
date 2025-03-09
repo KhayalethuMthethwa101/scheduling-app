@@ -19,6 +19,7 @@ public class EventsManagerApplication {
 
         FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
+                .setStorageBucket("voting-app-b302c.firebasestorage.app")
                 .build();
 
         if (FirebaseApp.getApps().isEmpty()) { // Ensure Firebase is initialized only once

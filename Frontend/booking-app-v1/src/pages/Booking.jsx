@@ -49,9 +49,10 @@ const Booking = () => {
               <div onClick={()=>navigate(`/booking/${item.eventId}`)} className='border border-blue-200 rounded-xl overflow-hidden cursor-pointer hover:translate-y-[-10px] transition-all duration-500' key={index}>
                 <img className='w-full h-48 object-cover bg-blue-50' src={item.imageUrl} alt="" /> 
                 <div className='p-4'>
-                  <div className='flex items-center gap-2 text-sm text-center text-green-500'>
-                    <p className='w-2 h-2 bg-green-500 rounded-full'></p><p>{item.status}</p>
-                  </div>
+                <div className={`flex items-center gap-2 text-sm text-center ${item.status === "Closed" ? "text-red-500" : "text-green-500"}`}>
+                  <p className={`w-2 h-2 rounded-full ${item.status === "Closed" ? "bg-red-500" : "bg-green-500"}`}></p>
+                  <p>{item.status}</p>
+                </div>
                   <p className='text-gray-900 text-lg font-medium'>{item.eventName}</p>
                   <p className='text-gray-600 text-sm'>{item.category}</p>
                 </div>

@@ -1,11 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword} from 'firebase/auth';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, fetchSignInMethodsForEmail} from 'firebase/auth';
 import { auth } from '../services/firebase';
 import { useUser } from '../context/UserContext';
 import axios from 'axios';
 import Modal from '../components/modal';
-
+import { assets } from '../assets/assets';
+import { storage } from '../services/firebase';
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
 
 const Login = () => {
 
@@ -22,11 +24,53 @@ const Login = () => {
   const { setIsLoggedIn, setProfileData } = useUser()
   const navigate = useNavigate()
 
+  const uploadDefaultProfilePic = async () => {
+    try {
+      const response = await fetch(assets.profile_pic);
+      const blob = await response.blob();
+      const storageRef = ref(storage, `profilePictures/${Date.now()}-default-profile.png`);
+      const uploadTask = uploadBytesResumable(storageRef, blob);
+      
+      return new Promise((resolve, reject) => {
+        uploadTask.on(
+          'state_changed',
+          null,
+          (error) => reject(error),
+          async () => {
+            const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+            resolve(downloadURL);
+          }
+        );
+      });
+    } catch (error) {
+      console.error('Error uploading default profile picture:', error);
+      return null;
+    }
+  };
+
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
+        // Validate Date of Birth
+        const today = new Date();
+        const dob = new Date(dateOfBirth);
+
+        if (dob > today) {
+            setError('Date of birth cannot be in the future');
+            return; // Stop execution
+        }
+        // Check if email is already registered in Firebase Authentication
+        const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+        
+        if (signInMethods.length > 0) {
+            setError('User already exists');
+            return; // Stop execution if user already exists
+        }
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+
+        const profilePicURL = await uploadDefaultProfilePic();
+
         const userProfile = {
           userName: name,
           email: user.email,
@@ -36,6 +80,7 @@ const Login = () => {
           gender,
           dob: dateOfBirth,
           role: 'user',
+          image: profilePicURL || assets.profile_pic,
         };
         // Create user in the Spring Boot backend
         await axios.post(`${import.meta.env.VITE_APP_API_URL}/users/adduser`, userProfile);
@@ -43,11 +88,14 @@ const Login = () => {
         setSuccess('Account created successfully!');
         setError(null)
         setIsLoggedIn(true)
-        navigate('/')
     } catch (error) {
-        setError(error);
-        console.error('Error signing up:', error);
-    }
+      if (error.code === 'auth/email-already-in-use') {
+          setError('User already exists');
+      } else {
+          setError(error.message);
+          console.error('Error signing up:', error);
+      }
+  }
   }
 
   const handleSignIn = async (e) => {
@@ -58,10 +106,8 @@ const Login = () => {
         const response = await axios.get(`${import.meta.env.VITE_APP_API_URL}/users/${user.email}`);
         const profileData = response.data;
         setProfileData(profileData);
-        console.log(setProfileData)
         setSuccess('Login successful!');
         setIsLoggedIn(true)
-        navigate('/')
     } catch (error) {
         setError('Login failed. Please check your email and password.'); 
         console.error('Error signing in:', error);
@@ -77,6 +123,9 @@ const Login = () => {
   };
 
   const handleCloseModal = () => {
+    if (!error) { 
+      navigate('/'); // Navigate only if there is no error
+    }
     setSuccess(null);
     setError(null);
   };
@@ -168,16 +217,24 @@ const Login = () => {
             required
           />
         </div>
-        {error && <p className='text-red-500'>{error}</p>}
-        {success && <p className='text-green-500'>{success}</p>}
+        {/* {error && <p className='text-red-500'>{error}</p>}
+        {success && <p className='text-green-500'>{success}</p>} */}
         <button className='bg-primary text-white w-full py-2 rounded-md text-base'>{state === 'Sign Up' ? "Create Account" : "Log in"}</button>
         {state === "Sign Up"
           ? <p>Already have an account? <span onClick={() => setState("Login")} className='text-primary underline cursor-pointer'>Login here</span></p>
           : <p>Create a new account? <span onClick={() => setState("Sign Up")} className='text-primary underline cursor-pointer'>Click here</span></p>
         }
       </div>
-      {success && <Modal message={success} onClose={handleCloseModal} />}
-      {error && <Modal message={error} onClose={handleCloseModal} />}
+      {success && 
+        <Modal onClose={handleCloseModal}>
+            <p className="text-green-600">{success}</p>
+        </Modal>
+      }
+      {error && 
+        <Modal message={error} onClose={handleCloseModal}>
+          <p className="text-red-600">{error}</p>
+        </Modal>
+      }
     </form>
   );
 }
