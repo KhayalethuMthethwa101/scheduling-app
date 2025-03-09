@@ -4,6 +4,10 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+# Ignore Firebase service keys and other credentials
+src/main/resources/firebase-service-key.json
+src/main/resources/
+
 ### STS ###
 .apt_generated
 .classpath
